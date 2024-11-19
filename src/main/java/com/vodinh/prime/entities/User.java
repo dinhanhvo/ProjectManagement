@@ -1,59 +1,40 @@
 package com.vodinh.prime.entities;
 
-import com.vodinh.prime.entities.audit.DateAudit;
+import lombok.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
-
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-            "username"
-        }),
-        @UniqueConstraint(columnNames = {
-            "email"
-        })
-})
+@Table(name = "user")
+@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class User extends DateAudit {
+@AllArgsConstructor
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 40)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank
-    @Size(max = 15)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @NaturalId
-    @NotBlank
-    @Size(max = 40)
-    @Email
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @NotBlank
-    @Size(max = 100)
+    @Column(name = "password", nullable = false)
     private String password;
 
+    // relate to Role
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
+    @JoinTable(
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles = new HashSet<>();
 }
-

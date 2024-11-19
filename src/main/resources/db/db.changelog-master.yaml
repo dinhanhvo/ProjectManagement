@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changelogs/role.yaml
+
+  - include:
+      file: classpath:db/changelogs/user.yaml
+
+  - include:
+      file: classpath:db/changelogs/roles_users.yaml
+
+  - include:
+      file: classpath:db/changelogs/project.yaml
+
+  - include:
+      file: classpath:db/changelogs/task.yaml
