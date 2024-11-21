@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6-insert-roles
+      author: Vo Dinh
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+              - column:
+                  name: description
+                  value: Administrator role with full access
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: ROLE_PM
+              - column:
+                  name: description
+                  value: Project manager manage resource belong to project
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: name
+                  value: ROLE_USER
+              - column:
+                  name: description
+                  value: Regular user role with limited access

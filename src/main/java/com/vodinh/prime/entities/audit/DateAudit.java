@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -26,4 +28,11 @@ public abstract class DateAudit implements Serializable {
     @LastModifiedDate
     private Instant updatedAt;
 
+    public LocalDateTime getCreatedAtAsLocalDateTime() {
+        return getCreatedAt().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public LocalDateTime getUpdatetedAtAsLocalDateTime() {
+        return getUpdatedAt().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
 }

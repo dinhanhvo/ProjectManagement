@@ -25,15 +25,12 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
-        task.setCreatedAt(LocalDateTime.now());
-        task.setUpdatedAt(LocalDateTime.now());
         return taskRepository.save(task);
     }
 
     public Task updateTask(Long id, Task task) {
         if (taskRepository.existsById(id)) {
             task.setId(id);
-            task.setUpdatedAt(LocalDateTime.now());
             return taskRepository.save(task);
         }
         return null;

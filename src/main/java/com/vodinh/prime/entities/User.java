@@ -1,17 +1,21 @@
 package com.vodinh.prime.entities;
 
-import lombok.*;
+import com.vodinh.prime.entities.audit.DateAudit;
+import com.vodinh.prime.entities.audit.UserDateAudit;
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "user")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

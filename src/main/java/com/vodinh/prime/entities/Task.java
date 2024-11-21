@@ -1,16 +1,19 @@
 package com.vodinh.prime.entities;
 
-import lombok.*;
+import com.vodinh.prime.entities.audit.DateAudit;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.*;
 
+import java.time.Instant;
+
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "task")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +29,10 @@ public class Task {
     private String status;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     // task belong to project
     @ManyToOne(fetch = FetchType.LAZY)
