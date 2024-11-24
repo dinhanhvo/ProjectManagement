@@ -5,15 +5,15 @@ import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.requests.SignUpRequest;
 import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
+import com.vodinh.prime.util.SecurityUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -45,5 +45,8 @@ public class UserController {
         return  ResponseEntity.ok(result);
     }
 
-
+    @GetMapping("/current-user")
+    public String getCurrentUser() {
+        return SecurityUtils.getCurrentUser();
+    }
 }

@@ -11,3 +11,12 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/db.changelog-master.yaml
+#  graphql:
+#    cors:
+#      allowed-headers: "Authorization,Link,X-Total-Count"
+#      allowed-methods: ${"*"}
+#      allow-credentials: true
+#      max-age: 1800
+#      allowed-origin-patterns: ${"*"}
+
+

@@ -28,11 +28,11 @@ public class Task extends DateAudit {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+//    @Column(name = "created_at", nullable = false)
+//    private Instant createdAt;
+//
+//    @Column(name = "updated_at", nullable = false)
+//    private Instant updatedAt;
 
     // task belong to project
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,8 @@
 package com.vodinh.prime.controller;
 
 import com.vodinh.prime.entities.Task;
+import com.vodinh.prime.model.ProjectDTO;
+import com.vodinh.prime.service.ProjectService;
 import com.vodinh.prime.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,13 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final ProjectService projectService;
+
+    public TaskController(TaskService taskService, ProjectService projectService) {
+        this.taskService = taskService;
+        this.projectService = projectService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {

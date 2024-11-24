@@ -1,11 +1,8 @@
 package com.vodinh.prime.entities;
 
 import com.vodinh.prime.entities.audit.UserDateAudit;
-import lombok.*;
 import jakarta.persistence.*;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -25,12 +22,6 @@ public class Project extends UserDateAudit {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
 
     // Foreign key relate to 'user' (ownerId)
     @ManyToOne(fetch = FetchType.LAZY)
