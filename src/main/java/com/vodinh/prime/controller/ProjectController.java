@@ -1,6 +1,7 @@
 package com.vodinh.prime.controller;
 
 import com.vodinh.prime.model.ProjectDTO;
+import com.vodinh.prime.model.ProjectWithTaskDTO;
 import com.vodinh.prime.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,12 @@ public class ProjectController {
     public ResponseEntity<ProjectDTO> getProjectById(@PathVariable Long id) {
         ProjectDTO project = projectService.getProjectById(id);
         return project != null ? new ResponseEntity<>(project, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/project/detail/{id}")
+    public ResponseEntity<ProjectWithTaskDTO> getProjectWithTasks(@PathVariable Long id) {
+        ProjectWithTaskDTO result = projectService.getProjectWithTasks(id);
+        return result != null ? new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // create new

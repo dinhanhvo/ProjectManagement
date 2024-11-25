@@ -37,6 +37,12 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public List<TaskDTO> getTasksByProjectId() {
+        return taskRepository.findAll().stream()
+                .map(taskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public Task getTaskById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
         return task.orElse(null);
