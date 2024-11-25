@@ -1,34 +1,30 @@
 package com.vodinh.prime.controller;
 
 import com.vodinh.prime.entities.User;
-import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.requests.SignUpRequest;
 import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
 import com.vodinh.prime.util.SecurityUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    RoleRepository roleRepository;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
         // Creating user's account
@@ -43,6 +39,19 @@ public class UserController {
         User result = userService.saveUser(user);
 
         return  ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> projects = userService.getAllUsers();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    // delete user by id
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        return deleted ? new ResponseEntity<>(true, HttpStatus.OK) : new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/current-user")

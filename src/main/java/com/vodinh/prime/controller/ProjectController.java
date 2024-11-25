@@ -1,9 +1,7 @@
 package com.vodinh.prime.controller;
 
-import com.vodinh.prime.entities.Project;
 import com.vodinh.prime.model.ProjectDTO;
 import com.vodinh.prime.service.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,11 @@ import java.util.Objects;
 @RequestMapping("/api")
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
+    private final ProjectService projectService;
+
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     // get all project
     @GetMapping("/projects")

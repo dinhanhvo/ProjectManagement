@@ -8,8 +8,10 @@ import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -24,6 +26,7 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
+    @Transactional(readOnly = true)
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByName("ROLE_USER")
@@ -32,6 +35,19 @@ public class UserService {
         user.setRoles(Collections.singleton(userRole));
 
         return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public boolean isExistedUser(User user) {

@@ -1,10 +1,9 @@
 package com.vodinh.prime.entities;
 
+import com.vodinh.prime.enums.TaskStatus;
 import com.vodinh.prime.entities.audit.DateAudit;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -25,14 +24,9 @@ public class Task extends DateAudit {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "status", nullable = false)
-    private String status;
-
-//    @Column(name = "created_at", nullable = false)
-//    private Instant createdAt;
-//
-//    @Column(name = "updated_at", nullable = false)
-//    private Instant updatedAt;
+    @Column(name = "status", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
     // task belong to project
     @ManyToOne(fetch = FetchType.LAZY)
