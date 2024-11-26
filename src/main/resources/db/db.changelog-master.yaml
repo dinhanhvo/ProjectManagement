@@ -16,3 +16,6 @@ databaseChangeLog:
 
   - include:
       file: classpath:db/changelogs/insert-roles.yaml
+
+  - include:
+      file: classpath:db/changelogs/create-task-project-assigned-index.yaml

@@ -1,16 +1,18 @@
 package com.vodinh.prime.entities;
 
 import com.vodinh.prime.entities.audit.DateAudit;
-import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "user")
 @Builder
@@ -42,7 +44,7 @@ public class User extends DateAudit implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

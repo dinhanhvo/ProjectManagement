@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -26,13 +26,13 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new AppException("ROLE_USER was not created yet."));
 
-        user.setRoles(Stream.of(userRole).toList());
+        user.setRoles(Collections.singleton(userRole));
 
         return userRepository.save(user);
     }
