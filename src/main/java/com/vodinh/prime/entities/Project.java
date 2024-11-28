@@ -1,6 +1,8 @@
 package com.vodinh.prime.entities;
 
 import com.vodinh.prime.entities.audit.UserDateAudit;
+import com.vodinh.prime.listeners.ProjectEntityListener;
+import com.vodinh.prime.listeners.ProjectEventListener;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +17,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@EntityListeners(ProjectEntityListener.class)
+@EntityListeners(ProjectEventListener.class)
 public class Project extends UserDateAudit {
 
     @Id

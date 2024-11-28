@@ -10,6 +10,8 @@ import com.vodinh.prime.repositories.ProjectRepository;
 import com.vodinh.prime.repositories.TaskRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import com.vodinh.prime.requests.TaskRequest;
+import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,6 +61,8 @@ public class TaskService {
         return this.upsertTask( taskRequest, task);
     }
 
+    @CacheEvict(value = "projects", key = "#task.projectId")
+    @Transactional
     public TaskDTO updateTask(Long taskId, TaskRequest taskRequest) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new ResourceNotFoundException("Task not found")

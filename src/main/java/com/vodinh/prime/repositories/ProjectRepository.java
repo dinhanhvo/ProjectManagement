@@ -9,17 +9,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    Project findByName(String name);
+    List<Project> findByName(String name);
 
     @EntityGraph(attributePaths = {"tasks"})
     Project findWithTasksById(Long id);
-
-//    @Query("SELECT new com.vodinh.prime.model.ProjectWithTaskDTO(" +
-//            "p.id, p.name, p.owner, p.description, p.createdAt, p.updatedAt, " +
-//            "t.id, t.title, t.description, t.assignedTo, t.status, t.createdAt, t.updatedAt) " +
-//            "FROM Project p LEFT JOIN Task t ON p.id = t.project.id " +
-//            "WHERE p.id = :projectId")
-//    List<ProjectWithTaskDTO> getProjectWithTasks(@Param("projectId") Long projectId);
 
     @Query(value = "SELECT \n" +
             "        p.id AS projectId, \n" +

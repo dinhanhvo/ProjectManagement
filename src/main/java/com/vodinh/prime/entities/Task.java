@@ -2,6 +2,7 @@ package com.vodinh.prime.entities;
 
 import com.vodinh.prime.enums.TaskStatus;
 import com.vodinh.prime.entities.audit.DateAudit;
+import com.vodinh.prime.listeners.TaskEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(TaskEntityListener.class)
 public class Task extends DateAudit {
 
     @Id

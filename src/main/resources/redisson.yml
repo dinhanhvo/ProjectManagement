@@ -1,0 +1,7 @@
+singleServerConfig:
+  address: "redis://127.0.0.1:6379"
+  database: 0
+  connectionPoolSize: 64
+  connectionMinimumIdleSize: 24
+  retryInterval: 1500
+  timeout: 3000

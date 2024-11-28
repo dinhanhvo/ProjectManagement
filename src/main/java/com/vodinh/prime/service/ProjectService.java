@@ -11,13 +11,20 @@ import com.vodinh.prime.repositories.ProjectRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import com.vodinh.prime.util.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,10 +36,14 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final ProjectMapper projectMapper;
 
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository, ProjectMapper projectMapper) {
+    private final RedissonClient redissonClient;
+
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository,
+                          ProjectMapper projectMapper, RedissonClient redissonClient) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.projectMapper = projectMapper;
+        this.redissonClient = redissonClient;
     }
 
     public List<ProjectDTO> getAllProjects() {
@@ -47,6 +58,7 @@ public class ProjectService {
         return projectMapper.toDTO(project);
     }
 
+    @Cacheable(value = "projects", key = "#projectId ")
     public ProjectWithTaskDTO getProjectWithTasks(Long projectId) {
         List<Object[]> results = projectRepository.getProjectWithTasksNative(projectId);
         if (results.isEmpty()) {
@@ -64,7 +76,7 @@ public class ProjectService {
                 ((Timestamp) firstRow[5]).toLocalDateTime()  // projectUpdatedAt
         );
 
-        // Map all tasks into TaskDTO and add them to the project
+        // Map all tasks into TaskDTO and add them into the project
         for (Object[] row : results) {
             if (row[6] != null) { // Check if task exists
                 TaskDTO taskDTO = TaskDTO.builder()
@@ -83,6 +95,28 @@ public class ProjectService {
         return projectWithTaskDTO;
     }
 
+    public List<ProjectDTO> searchProjectsByName(String name) {
+        // get from Redisson first
+        RMap<String, Project> projectMap = redissonClient.getMap("projects");
+        List<Project> projects = new ArrayList<>();
+        if (projectMap.isExists()) {
+            projects = projectMap.values().stream()
+                .filter(project -> project.getName().toLowerCase()
+                .contains(name.toLowerCase())).collect(Collectors.toList());
+
+            // if not cached yet, get from database
+            if (projects.isEmpty()) {
+                projects = this.projectRepository.findByName(name);
+                // update cache
+                Map<Long, Project> map = projects.stream().collect(Collectors.toMap(Project::getId, Function.identity()));
+                RMap<Long, Project> projectCache = redissonClient.getMap("projects");
+                projectCache.putAll(map);
+            }
+        }
+        return projects.stream().map(this.projectMapper::toDTO).toList();
+
+    }
+
     @Transactional
     public ProjectDTO createProject(ProjectDTO projectDTO) {
         String username = SecurityUtils.getCurrentUser();
@@ -98,9 +132,10 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectDTO updateProject(Long id, ProjectDTO projectDTO) {
-        if (projectRepository.existsById(id)) {
-            Project prj = projectRepository.findById(id).get();
+    @CacheEvict(value = "projects", key = "#projectId ")
+    public ProjectDTO updateProject(Long projectId, ProjectDTO projectDTO) {
+        if (projectRepository.existsById(projectId)) {
+            Project prj = projectRepository.findById(projectId).get();
             prj.setName(projectDTO.getName());
             prj.setDescription(projectDTO.getDescription());
             Project ret = projectRepository.save(prj);
@@ -111,42 +146,13 @@ public class ProjectService {
     }
 
     @Transactional
-    public boolean deleteProject(Long id) {
-        if (projectRepository.existsById(id)) {
-            projectRepository.deleteById(id);
+    @CacheEvict(value = "projects", key = "#projectId ")
+    public boolean deleteProject(Long projectId) {
+        if (projectRepository.existsById(projectId)) {
+            projectRepository.deleteById(projectId);
             return true;
         }
         return false;
     }
-
-    public ProjectWithTaskDTO mapToDTO(Object[] result) {
-        Long projectId = (Long) result[0];
-        String projectName = (String) result[1];
-        String ownerName = (String) result[2]; // Retrieved from the `user` table
-        String description = (String) result[3];
-        LocalDateTime createdAt = (LocalDateTime) result[4];
-        LocalDateTime updatedAt = (LocalDateTime) result[5];
-
-        // Initialize ProjectWithTaskDTO
-        ProjectWithTaskDTO dto = new ProjectWithTaskDTO(projectId, projectName, ownerName, description, createdAt, updatedAt);
-
-        // Task details, if present
-        if (result[6] != null) {
-            TaskDTO taskDTO = new TaskDTO(
-                    (Long) result[6],  // Task ID
-                    (String) result[7], // Task Title
-                    projectName,        // Project Name
-                    (String) result[8], // Task Description
-                    (String) result[9], // Assigned To
-                    (String) result[10],// Status
-                    (LocalDateTime) result[11], // Created At
-                    (LocalDateTime) result[12]  // Updated At
-            );
-            dto.getTaskDTOS().add(taskDTO);
-        }
-
-        return dto;
-    }
-
 
 }

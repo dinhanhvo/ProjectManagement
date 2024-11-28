@@ -1,5 +1,6 @@
 package com.vodinh.prime.controller;
 
+import com.vodinh.prime.entities.Project;
 import com.vodinh.prime.model.ProjectDTO;
 import com.vodinh.prime.model.ProjectWithTaskDTO;
 import com.vodinh.prime.service.ProjectService;
@@ -38,6 +39,12 @@ public class ProjectController {
     public ResponseEntity<ProjectWithTaskDTO> getProjectWithTasks(@PathVariable Long id) {
         ProjectWithTaskDTO result = projectService.getProjectWithTasks(id);
         return result != null ? new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/projects/search")
+    public ResponseEntity<List<ProjectDTO>> searchProjects(@RequestParam String name) {
+        List<ProjectDTO> projects = projectService.searchProjectsByName(name);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     // create new

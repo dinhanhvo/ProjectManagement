@@ -13,7 +13,15 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/db.changelog-master.yaml
-#  graphql:
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  data:
+    redis:
+      host: localhost
+      port: 6379
 #    cors:
 #      allowed-headers: "Authorization,Link,X-Total-Count"
 #      allowed-methods: ${"*"}
