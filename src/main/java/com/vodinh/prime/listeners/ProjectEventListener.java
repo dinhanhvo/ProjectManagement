@@ -1,21 +1,22 @@
 package com.vodinh.prime.listeners;
 
+import com.vodinh.prime.controller.ProjectController;
 import com.vodinh.prime.entities.Project;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectEventListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectEventListener.class);
 
     private final RedissonClient redissonClient;
 
@@ -53,12 +54,12 @@ public class ProjectEventListener {
 
     @PostPersist
     public void afterSave(Project project) {
-        System.out.println("After saving project: " + project.getName());
+        logger.info(STR."After saving project: \{project.getName()}");
         if (Objects.nonNull(project.getId())) {
-            System.out.println("Project updated: " + project.getName());
+            logger.info(STR."update project: \{project.getName()}");
             updateRedisCache(project);
         } else {
-            System.out.println("Project created: " + project.getName());
+            logger.info(STR."creating project: \{project.getName()}");
             // just save
             RMap<Long, Project> projectCache = redissonClient.getMap("projects");
             projectCache.put(project.getId(), project);

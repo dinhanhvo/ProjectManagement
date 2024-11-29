@@ -1,5 +1,6 @@
 package com.vodinh.prime.service;
 
+import com.vodinh.prime.controller.ProjectController;
 import com.vodinh.prime.entities.Project;
 import com.vodinh.prime.entities.User;
 import com.vodinh.prime.exception.ResourceNotFoundException;
@@ -13,6 +14,8 @@ import com.vodinh.prime.util.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
     private final ProjectRepository projectRepository;
 
@@ -104,9 +107,11 @@ public class ProjectService {
                 .filter(project -> project.getName().toLowerCase()
                 .contains(name.toLowerCase())).collect(Collectors.toList());
 
+            logger.info("------------ get from Redis: {}", projects);
             // if not cached yet, get from database
             if (projects.isEmpty()) {
                 projects = this.projectRepository.findByName(name);
+                logger.info("------ from redis null so - get from Database: {}", projects);
                 // update cache
                 Map<Long, Project> map = projects.stream().collect(Collectors.toMap(Project::getId, Function.identity()));
                 RMap<Long, Project> projectCache = redissonClient.getMap("projects");
