@@ -3,13 +3,10 @@ package com.vodinh.prime.listeners;
 import com.vodinh.prime.entities.Project;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;
-import org.hibernate.internal.util.collections.CollectionHelper;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.data.rest.core.event.*;
 
 import java.util.List;
 import java.util.Map;
@@ -42,11 +39,11 @@ public class ProjectEventListener {
         }
     }
 
-    private void updateRedisCache(List<Project> projects) {
-        Map<Long, Project> map = projects.stream().collect(Collectors.toMap(Project::getId, Function.identity()));
-        RMap<Long, Project> projectCache = redissonClient.getMap("projects");
-        projectCache.putAll(map);
-    }
+//    private void updateRedisCache(List<Project> projects) {
+//        Map<Long, Project> map = projects.stream().collect(Collectors.toMap(Project::getId, Function.identity()));
+//        RMap<Long, Project> projectCache = redissonClient.getMap("projects");
+//        projectCache.putAll(map);
+//    }
 
     @PrePersist
     public void beforeSave(Project project) {

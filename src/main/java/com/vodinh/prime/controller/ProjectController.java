@@ -4,6 +4,8 @@ import com.vodinh.prime.entities.Project;
 import com.vodinh.prime.model.ProjectDTO;
 import com.vodinh.prime.model.ProjectWithTaskDTO;
 import com.vodinh.prime.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.Objects;
 @RequestMapping("/api")
 public class ProjectController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
+
     private final ProjectService projectService;
 
     public ProjectController(ProjectService projectService) {
@@ -24,6 +28,10 @@ public class ProjectController {
     // get all project
     @GetMapping("/projects")
     public ResponseEntity<List<ProjectDTO>> getAllProjects() {
+        logger.info("This is an INFO log message");
+        logger.warn("This is a WARN log message");
+        logger.error("This is an ERROR log message");
+
         List<ProjectDTO> projects = projectService.getAllProjects();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
