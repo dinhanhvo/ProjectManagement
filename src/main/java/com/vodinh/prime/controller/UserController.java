@@ -5,6 +5,7 @@ import com.vodinh.prime.requests.SignUpRequest;
 import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
 import com.vodinh.prime.util.SecurityUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "User Controller", description = "APIs for managing users")
 public class UserController {
 
     private final UserService userService;
