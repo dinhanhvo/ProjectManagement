@@ -35,6 +35,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="profession" type="VARCHAR(255)" />
+            <column name="deleted" type="boolean" defaultValueBoolean="false"/>
         </createTable>
     </changeSet>
 
