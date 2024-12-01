@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="4" author="Vo Dinh">
+        <createTable tableName="weights">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="serial_number" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="model" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="quy_cach" type="DOUBLE">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" />
+            <column name="contact_id" type="INT">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="weights" baseColumnNames="contact_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE" onUpdate="CASCADE"
+                constraintName="fk_weights_contact_id" />
+    </changeSet>
+
+</databaseChangeLog>

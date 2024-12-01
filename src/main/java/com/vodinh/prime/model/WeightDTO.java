@@ -1,5 +1,6 @@
 package com.vodinh.prime.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,11 +12,17 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDTO extends BaseDTO {
+public class WeightDTO extends BaseDTO{
     private Long id;
-    private String name;
-    private String owner;
-    private String description;
+    @NotBlank
+    private String serialNumber;
+    @NotBlank
+    private String model;
+    @NotBlank
+    private Double quyCach;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long contactId;
+    private String contactName;
+    private String contactUsername;
 }

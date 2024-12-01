@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ProblemDetail handleBadCredentialsException(BadCredentialsException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.OK);
         problemDetail.setTitle("Login failed");
         problemDetail.setDetail("Validation failed for one or more arguments.");
         return problemDetail;
