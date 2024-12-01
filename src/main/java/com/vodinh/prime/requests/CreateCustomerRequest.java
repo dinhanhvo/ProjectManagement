@@ -1,5 +1,6 @@
 package com.vodinh.prime.requests;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,12 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCustomerRequest extends SignUpRequest {
-//    private String clientId;
 
+    @NotBlank
+    private String clientId;
+
+    @NotBlank
     private String phone;
 
     private String position;
 
+    @NotBlank
     private String companyName;
 
     private String companyPhone;

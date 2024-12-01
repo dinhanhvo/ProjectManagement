@@ -32,6 +32,7 @@ public class UserController {
         // Creating user's account
         User user = new User();
         BeanUtils.copyProperties(signUpRequest, user);
+        user.setClientId(user.getUsername());
 
         if (userService.isExistedUser(user)) {
             return new ResponseEntity<>(new ApiResponse(false, "Username/Email is already taken!"),

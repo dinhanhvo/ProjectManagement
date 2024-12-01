@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(org.springframework.web.bind.MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setTitle("Login failed");
+        problemDetail.setTitle("Validation Error");
         problemDetail.setDetail("Validation failed for one or more arguments.");
         return problemDetail;
     }
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ProblemDetail handleBadCredentialsException(BadCredentialsException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problemDetail.setTitle("Validation Error");
+        problemDetail.setTitle("Login failed");
         problemDetail.setDetail("Validation failed for one or more arguments.");
         return problemDetail;
     }

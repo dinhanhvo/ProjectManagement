@@ -41,4 +41,11 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="add-client_id-column-to-users" author="yourname">
+        <addColumn tableName="users">
+            <column name="client_id" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
