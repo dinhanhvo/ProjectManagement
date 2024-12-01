@@ -40,6 +40,9 @@ public class User extends DateAudit implements UserDetails {
     @Column(name = "phone", length = 20)
     private String phone;
 
+//    @Column(name = "client_id", length = 255)
+//    private String clientId;
+
     @Column(name = "position", length = 255)
     private String position;
 

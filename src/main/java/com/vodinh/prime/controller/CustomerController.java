@@ -32,6 +32,7 @@ public class CustomerController {
         // Creating user's account
         User user = new User();
         BeanUtils.copyProperties(createCustomerRequest, user);
+        user.setUsername(user.getPhone());
 
         if (userService.isExistedUser(user)) {
             return new ResponseEntity<>(new ApiResponse(false, "Info was already created!"),

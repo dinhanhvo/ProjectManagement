@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCustomerRequest extends SignUpRequest {
+//    private String clientId;
+
     private String phone;
 
     private String position;

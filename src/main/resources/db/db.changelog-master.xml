@@ -8,6 +8,5 @@
     <include file="classpath:db/changelogs/01_create_users_table.xml" />
     <include file="classpath:db/changelogs/02_create_roles_table.xml" />
     <include file="classpath:db/changelogs/03_create_user_roles_table.xml" />
-<!--    <include file="classpath:db/changelogs/04.add-deleted-column-to-users.xml" />-->
 
 </databaseChangeLog>
