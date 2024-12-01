@@ -6,6 +6,7 @@ import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,19 @@ public class CustomerController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @DeleteMapping("/customer/deactive/{id}")
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<User> getCustomerById(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/customer/{phone}")
+    public ResponseEntity<List<User>> getCustomerByPhone(@PathVariable String phone) {
+        List<User> projects = userService.getCustomerByPhone(phone);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/customer/deactivate/{id}")
     public ResponseEntity<Boolean> softDeleteCustomer(@PathVariable Long id) {
         boolean deleted = userService.softDeleteUser(id);
         return deleted ? new ResponseEntity<>(true, HttpStatus.OK) : new ResponseEntity<>(false, HttpStatus.NOT_FOUND);

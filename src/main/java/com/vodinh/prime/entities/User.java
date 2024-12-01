@@ -14,7 +14,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Builder
 @Data
 @NoArgsConstructor

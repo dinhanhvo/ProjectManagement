@@ -4,6 +4,7 @@ package com.vodinh.prime.service;
 import com.vodinh.prime.entities.Role;
 import com.vodinh.prime.entities.User;
 import com.vodinh.prime.exception.AppException;
+import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,6 +52,16 @@ public class UserService {
         return userRepository.findByDeletedFalse();
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(" User not found {}", "id", id)
+        );
+    }
+
+    public List<User> getCustomerByPhone(String phone) {
+        return userRepository.findByPhoneOrCompanyPhoneIs(phone);
+    }
+
     @Transactional
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
@@ -80,6 +91,10 @@ public class UserService {
     }
 
     public List<User> getAllActiveCustomer() {
+        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull();
+    }
+
+    public List<User> getCustomerByPhone() {
         return userRepository.findByDeletedFalseAndCompanyNameIsNotNull();
     }
 }

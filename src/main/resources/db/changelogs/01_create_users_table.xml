@@ -31,7 +31,10 @@
             <column name="company_phone" type="VARCHAR(20)" />
             <column name="address" type="TEXT" />
             <column name="city" type="VARCHAR(100)" />
-            <column name="created_date" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false" />
             </column>
             <column name="profession" type="VARCHAR(255)" />
