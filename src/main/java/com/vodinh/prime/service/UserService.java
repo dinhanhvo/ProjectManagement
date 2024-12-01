@@ -3,6 +3,7 @@ package com.vodinh.prime.service;
 
 import com.vodinh.prime.entities.Role;
 import com.vodinh.prime.entities.User;
+import com.vodinh.prime.enums.RoleEnum;
 import com.vodinh.prime.exception.AppException;
 import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.repositories.RoleRepository;
@@ -27,14 +28,17 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    @Transactional(readOnly = false)
     public User createUser(User user) {
+        return  createUser(user, String.valueOf(RoleEnum.ROLE_USER));
+    }
+    @Transactional(readOnly = false)
+    public User createUser(User user, String role) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleRepository.findByName("ROLE_CUSTOMER")
-                .orElseThrow(() -> new AppException("ROLE_USER was not created yet."));
+        Role userRole = roleRepository.findByName(role)
+                .orElseThrow(() -> new AppException("ROLE was not created yet."));
 
-        user.setRoles(Collections.singleton(userRole));
+        user.setRoles(List.of(userRole));
 
         return userRepository.save(user);
     }

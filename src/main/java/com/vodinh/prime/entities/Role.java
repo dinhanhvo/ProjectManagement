@@ -1,9 +1,10 @@
 package com.vodinh.prime.entities;
 
-import lombok.*;
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "roles")
@@ -21,6 +22,6 @@ public class Role {
     private String name;
 
     // related to User
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(mappedBy = "roles")
+//    private Set<User> users = new HashSet<>();
 }

@@ -1,6 +1,7 @@
 package com.vodinh.prime.controller;
 
 import com.vodinh.prime.entities.User;
+import com.vodinh.prime.enums.RoleEnum;
 import com.vodinh.prime.requests.CreateCustomerRequest;
 import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
@@ -39,7 +40,7 @@ public class CustomerController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        User result = userService.createUser(user);
+        User result = userService.createUser(user, String.valueOf(RoleEnum.ROLE_CUSTOMER));
 
         return  ResponseEntity.ok(result);
     }
