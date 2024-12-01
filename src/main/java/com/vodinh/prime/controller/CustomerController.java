@@ -79,11 +79,11 @@ public class CustomerController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/customer/{phone}")
-    public ResponseEntity<List<User>> getCustomerByPhone(@PathVariable String phone) {
-        List<User> projects = userService.getCustomerByPhone(phone);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
-    }
+//    @GetMapping("/customer/{phone}")
+//    public ResponseEntity<List<User>> getCustomerByPhone(@PathVariable String phone) {
+//        List<User> projects = userService.getCustomerByPhone(phone);
+//        return new ResponseEntity<>(projects, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/customer/deactivate/{id}")
     public ResponseEntity<Boolean> softDeleteCustomer(@PathVariable Long id) {

@@ -58,9 +58,9 @@ public class UserService {
         );
     }
 
-    public List<User> getCustomerByPhone(String phone) {
-        return userRepository.findByPhoneOrCompanyPhoneIs(phone);
-    }
+//    public List<User> getCustomerByPhone(String phone) {
+//        return userRepository.findByPhoneOrCompanyPhoneIs(phone);
+//    }
 
     @Transactional
     public boolean deleteUser(Long id) {
