@@ -37,6 +37,29 @@ public class User extends DateAudit implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "position", length = 255)
+    private String position;
+
+    @Column(name = "company_name", length = 255)
+    private String companyName;
+
+    @Column(name = "company_phone", length = 20)
+    private String companyPhone;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "city", length = 100)
+    private String city;
+
+    @Column(name = "profession", length = 255)
+    private String profession;
+
+    private Boolean deleted = false;
+
     // relate to Role
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

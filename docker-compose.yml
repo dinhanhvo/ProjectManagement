@@ -1,19 +1,19 @@
 version: '3.8'
 
 services:
-  mysql8-container:
-    container_name: mysql8-container
+  mysql8-eip-container:
+    container_name: mysql8-eip-container
     image: mysql:8.2.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Ldb@2025
-      MYSQL_DATABASE: ProjectManagement
+      MYSQL_ROOT_PASSWORD: Eip@2025
+      MYSQL_DATABASE: eip
     ports:
-      - 3307:3306
+      - "3308:3306"
     #volumes:
-    #- ./sql/prime.sql:/docker-entrypoint-initdb.d/init-script.sql
+    #- ./sql/eip.sql:/docker-entrypoint-initdb.d/init-script.sql
     networks:
-      - prime-network
+      - eip-network
   phpmyadmin8-container:
     #intel host
     image: phpmyadmin/phpmyadmin
@@ -21,15 +21,15 @@ services:
     container_name: phpmyadmin8-container
     restart: always
     depends_on:
-      - mysql8-container
+      - mysql8-eip-container
     ports:
       - "8100:80" #port mapping
     environment:
-      PMA_HOST: mysql8-container #phpMyAdmin Host, PMA = PHP My Amin
+      PMA_HOST: mysql8-eip-container #phpMyAdmin Host, PMA = PHP My Amin
       PMA_PORT: 3306
       UPLOAD_LIMIT: 500M
     networks:
-      - prime-network
+      - eip-network
   redis:
     image: docker.io/redis:7.2.3
     container_name: redis
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./redis-data:/data # Mount a volume for Redis data persistence
     networks:
-      - prime-network
+      - eip-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.13
     container_name: elasticsearch
@@ -47,15 +47,12 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#      - ELASTIC_PASSWORD=123
-#      - pack.security.enabled=true
-#      - pack.security.transport.ssl.enabled=true
     ports:
       - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
     networks:
-      - prime-network
+      - eip-network
   logstash:
     image: docker.elastic.co/logstash/logstash:7.17.13
     container_name: logstash
@@ -66,7 +63,7 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - prime-network
+      - eip-network
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.13
     container_name: kibana
@@ -78,19 +75,18 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - prime-network
-  prime-spring-container:
-    image: prime-service-image
-    container_name: prime-spring-container
+      - eip-network
+  eip-spring-container:
+    image: eip-service-image
+    container_name: eip-spring-container
     build:
       context: .
       dockerfile: Dockerfile
-      #docker tag <image_id> prime-spring:1.0.0
     ports:
       - "8088:8088"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql8-container:3306/ProjectManagement?serverTimezone=UTC&allowPublicKeyRetrieval=true
-      MYSQL_ROOT_PASSWORD: Ldb@2025
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql8-eip-container:3308/eip?serverTimezone=UTC&allowPublicKeyRetrieval=true
+      MYSQL_ROOT_PASSWORD: Eip@2025
       REDIS_HOST: redis
       REDIS_PORT: 6379
       LOGSTASH_HOST: logstash
@@ -99,19 +95,22 @@ services:
     #      KAFKA_BROKER_SERVER: kafka-broker-01
     #      KAFKA_BROKER_PORT: 19092
     networks:
-      - prime-network
+      - eip-network
     #depends_on only waits for the container to start, not for the service inside the container to be fully operational
     depends_on:
-      - mysql8-container
+      - mysql8-eip-container
       - redis
-      - logstash
+#      - logstash
 volumes:
   es_data:
     driver: local
 networks:
-  prime-network:
-    name: prime-network
+  eip-network:
+    name: eip-network
     driver: bridge
+
+#
+#  docker run -d -p 6379:6379 redis
 
 #curl -u elastic:123 -X POST "http://localhost:9200/_security/service/your-service-account-name/token" -H 'Content-Type: application/json' -d'
 #  {

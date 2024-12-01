@@ -38,7 +38,7 @@ public class UserController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        User result = userService.saveUser(user);
+        User result = userService.createUser(user);
 
         return  ResponseEntity.ok(result);
     }
@@ -60,4 +60,5 @@ public class UserController {
     public String getCurrentUser() {
         return SecurityUtils.getCurrentUser();
     }
+
 }

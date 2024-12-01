@@ -1,6 +1,5 @@
 package com.vodinh.prime.listeners;
 
-import com.vodinh.prime.controller.ProjectController;
 import com.vodinh.prime.entities.Project;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;

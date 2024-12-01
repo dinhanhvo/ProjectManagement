@@ -27,9 +27,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public User saveUser(User user) {
+    public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByName("ROLE_USER")
+
+        Role userRole = roleRepository.findByName("ROLE_CUSTOMER")
                 .orElseThrow(() -> new AppException("ROLE_USER was not created yet."));
 
         user.setRoles(Collections.singleton(userRole));
@@ -37,8 +38,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly = false)
+    public User updateUser(User user, boolean updatePass) {
+        if (updatePass) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        return userRepository.save(user);
+    }
+
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findByDeletedFalse();
     }
 
     @Transactional
@@ -50,7 +60,26 @@ public class UserService {
         return false;
     }
 
+    @Transactional
+    public boolean softDeleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            User u = userRepository.findById(id).get();
+            u.setDeleted(true);
+            userRepository.save(u);
+            return true;
+        }
+        return false;
+    }
+
     public boolean isExistedUser(User user) {
         return userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail());
+    }
+
+    public List<User> getAllActiveUsers() {
+        return userRepository.findByDeletedFalse();
+    }
+
+    public List<User> getAllActiveCustomer() {
+        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull();
     }
 }

@@ -3,6 +3,7 @@ package com.vodinh.prime.controller;
 import com.vodinh.prime.requests.LoginRequest;
 import com.vodinh.prime.responses.JwtAuthenticationResponse;
 import com.vodinh.prime.security.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Auth Controller", description = "APIs for author/authen users")
 @RequestMapping("/api/auth")
 public class AuthController {
 

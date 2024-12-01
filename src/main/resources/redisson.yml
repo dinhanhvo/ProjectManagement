@@ -1,5 +1,6 @@
 singleServerConfig:
-  address: "redis://redis:6379"
+  address: "redis://localhost:6379"
+#  address: "redis://redis:6379" # run by docker-compose
   database: 0
   connectionPoolSize: 64
   connectionMinimumIdleSize: 24

@@ -4,15 +4,15 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:mysql://localhost:3307/ProjectManagement
+    url: jdbc:mysql://localhost:3308/eip?useSSL=false&serverTimezone=UTC
     username: root
-    password: Ldb@2025
+    password: Eip@2025
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       read-only: false  # Ensure read-only is set to false
   liquibase:
     enabled: true
-    change-log: classpath:db/db.changelog-master.yaml
+    change-log: classpath:db/db.changelog-master.xml
 
   cache:
     type: redis
