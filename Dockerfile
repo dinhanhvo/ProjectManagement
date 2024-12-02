@@ -19,9 +19,9 @@ WORKDIR /app
 
 # Copy the built JAR from the build stage
 COPY --from=build /backend/target/*.jar app.jar
-COPY --from=build /backend/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+#COPY --from=build /backend/entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
+#ENTRYPOINT ["/entrypoint.sh"]
 # Expose the application port
 EXPOSE 8088
 
