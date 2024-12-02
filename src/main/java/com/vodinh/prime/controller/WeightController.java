@@ -47,7 +47,7 @@ public class WeightController {
 
     @PostMapping("/weight")
     public ResponseEntity<WeightDTO> createWeight(@RequestBody WeightDTO weight) {
-        return new ResponseEntity<>(weightService.saveWeight(weight), HttpStatus.OK);
+        return new ResponseEntity<>(weightService.createWeight(weight), HttpStatus.OK);
     }
 
     @PutMapping("/weight")

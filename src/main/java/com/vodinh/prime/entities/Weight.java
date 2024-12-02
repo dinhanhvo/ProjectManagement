@@ -3,6 +3,9 @@ package com.vodinh.prime.entities;
 import com.vodinh.prime.entities.audit.DateAudit;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -25,6 +28,9 @@ public class Weight extends DateAudit {
 
     @Column(name = "quy_cach", nullable = false)
     private Double quyCach;
+
+    @Column(name = "sell_at")
+    private LocalDateTime sellAt;
 
 //    @Column(name = "contact_id", nullable = false)
 //    private Long contactId;

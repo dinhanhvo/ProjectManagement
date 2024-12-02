@@ -20,6 +20,7 @@ public class WeightDTO extends BaseDTO{
     private String model;
     @NotBlank
     private Double quyCach;
+    private LocalDateTime sellAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long contactId;

@@ -6,7 +6,6 @@ import com.vodinh.prime.mappers.WeightMapper;
 import com.vodinh.prime.model.WeightDTO;
 import com.vodinh.prime.repositories.WeightRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,10 +50,10 @@ public class WeightService {
         return weightMapper.toDTO(weightRepository.save(found));
     }
 
-    public WeightDTO saveWeight(WeightDTO weightDTO) {
+    public WeightDTO createWeight(WeightDTO weightDTO) {
         Weight w = weightMapper.toEntity(weightDTO);
-
-        return weightMapper.toDTO(weightRepository.save(w));
+        Weight saved = weightRepository.save(w);
+        return weightMapper.toDTO(saved);
     }
 
     public boolean deleteWeight(Long weightId) {

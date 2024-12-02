@@ -14,5 +14,6 @@ public interface WeightMapper {
     WeightDTO toDTO(Weight weight);
 
     @Mapping(source = "contactId", target = "user.id")
+    @Mapping(source = "sellAt", target = "sellAt", defaultExpression = "java(java.time.LocalDateTime.now())")
     Weight toEntity(WeightDTO weightDTO);
 }

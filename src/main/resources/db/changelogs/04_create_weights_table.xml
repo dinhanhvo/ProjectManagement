@@ -35,4 +35,9 @@
                 constraintName="fk_weights_contact_id" />
     </changeSet>
 
+    <changeSet id="41-add-column-sell-at" author="Vo Dinh">
+        <addColumn tableName="weights">
+            <column name="sell_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
