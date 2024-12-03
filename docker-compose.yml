@@ -88,7 +88,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "9088:8088"
+      - "8088:8088"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql8-eip-container:3306/eip?serverTimezone=UTC&allowPublicKeyRetrieval=true
       MYSQL_ROOT_PASSWORD: Eip@2025
