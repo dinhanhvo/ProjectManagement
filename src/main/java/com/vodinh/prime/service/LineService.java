@@ -34,7 +34,7 @@ public class LineService {
     }
 
     public LineDTO getLineById(Long id) {
-        return lineMapper.toDTO(lineRepository.findById(id).orElse(null));
+        return lineMapper.toDTO(lineRepository.findById(id).get());
     }
 
     public LineDTO getLineByLineId(String lineId) {
