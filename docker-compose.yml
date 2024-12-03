@@ -14,82 +14,87 @@ services:
     #- ./sql/eip.sql:/docker-entrypoint-initdb.d/init-script.sql
     networks:
       - eip-network
-  phpmyadmin8-container:
+  eip-phpmyadmin8-container:
     #intel host
     image: phpmyadmin/phpmyadmin
     #image: arm64v8/phpmyadmin #choose this if you are running on Mac Apple Silicon(M1, M2,...)
-    container_name: phpmyadmin8-container
+    container_name: eip-phpmyadmin8-container
     restart: always
     depends_on:
       - mysql8-eip-container
     ports:
-      - "8100:80" #port mapping
+      - "9100:80" #port mapping
     environment:
       PMA_HOST: mysql8-eip-container #phpMyAdmin Host, PMA = PHP My Amin
       PMA_PORT: 3306
       UPLOAD_LIMIT: 500M
     networks:
       - eip-network
-  redis:
+  eip-redis:
     image: docker.io/redis:7.2.3
-    container_name: redis
+    container_name: eip-redis
     restart: always
     ports:
-      - "6379:6379" # Port mapping for Redis, you can change the host port as needed
+      - "7379:6379" # Port mapping for Redis, you can change the host port as needed
     volumes:
-      - ./redis-data:/data # Mount a volume for Redis data persistence
+      - ./eip-redis-data:/data # Mount a volume for Redis data persistence
     networks:
       - eip-network
-  elasticsearch:
+  eip-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.13
-    container_name: elasticsearch
+    container_name: eip-elasticsearch
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
-      - "9200:9200"
+      - "8200:9200"
     volumes:
-      - es_data:/usr/share/elasticsearch/data
+      - es_data:/usr/share/eip-elasticsearch/data
     networks:
       - eip-network
-  logstash:
+  eip-logstash:
     image: docker.elastic.co/logstash/logstash:7.17.13
-    container_name: logstash
+    container_name: eip-logstash
     ports:
-      - "5044:5044"
+      - "6044:5044"
     volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./eip-logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
-      - elasticsearch
+      - eip-elasticsearch
     networks:
       - eip-network
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.13
     container_name: kibana
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://eip-elasticsearch:9200
 #      - ELASTICSEARCH_API_KEY=U8Lq3WBqQ5-42cXWhDea0g
     ports:
-      - "5601:5601"
+      - "6601:5601"
     depends_on:
-      - elasticsearch
+      - eip-elasticsearch
     networks:
       - eip-network
   eip-spring-container:
     image: eip-service-image
     container_name: eip-spring-container
+#    working_dir: /app
+#    command: mvn package
+    volumes:
+#      - ./src:/app # Ánh xạ mã nguồn của bạn
+      - maven-cache:/root/.m2
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8088:8088"
+      - "9088:8088"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql8-eip-container:3306/eip?serverTimezone=UTC&allowPublicKeyRetrieval=true
       MYSQL_ROOT_PASSWORD: Eip@2025
-      REDIS_HOST: redis
+      REDIS_HOST: eip-redis
       REDIS_PORT: 6379
-      LOGSTASH_HOST: logstash
+      LOGSTASH_HOST: eip-logstash
       LOGSTASH_PORT: 5044
       #Kafka broker
     #      KAFKA_BROKER_SERVER: kafka-broker-01
@@ -99,18 +104,25 @@ services:
     #depends_on only waits for the container to start, not for the service inside the container to be fully operational
     depends_on:
       - mysql8-eip-container
-      - redis
-#      - logstash
+      - eip-redis
+#      - eip-logstash
 volumes:
+  maven-cache:
+    driver: local
   es_data:
     driver: local
+#  maven-cache:
 networks:
   eip-network:
     name: eip-network
     driver: bridge
 
-#
-#  docker run -d -p 6379:6379 redis
+# docker-compose -f docker-compose.yml up --build -d eip-redis
+# docker-compose -f docker-compose.yml up --build -d mysql8-eip-container
+# docker-compose -f docker-compose.yml up --build -d eip-spring-container
+# docker logs eip-spring-container -f
+#  docker run -d -p 7379:6379 eip-redis
+# docker exec -it mysql8-eip-container /bin/sh
 
 #curl -u elastic:123 -X POST "http://localhost:9200/_security/service/your-service-account-name/token" -H 'Content-Type: application/json' -d'
 #  {

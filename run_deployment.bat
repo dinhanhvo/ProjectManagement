@@ -1,23 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-echo =========================================
-echo Pulling latest code from Git repository
-echo =========================================
-git pull
-if errorlevel 1 (
-    echo Failed to pull from Git. Exiting.
-    exit /b 1
-)
-
-echo =========================================
-echo Cleaning and packaging the Maven project
-echo =========================================
-mvn clean package -DskipTests
-if errorlevel 1 (
-    echo Maven build failed. Exiting.
-    exit /b 1
-)
 
 echo =========================================
 echo Stopping the Docker container: eip-spring-container

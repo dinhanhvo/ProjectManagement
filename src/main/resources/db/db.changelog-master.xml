@@ -9,4 +9,5 @@
     <include file="classpath:db/changelogs/02_create_roles_table.xml" />
     <include file="classpath:db/changelogs/03_create_user_roles_table.xml" />
     <include file="classpath:db/changelogs/04_create_weights_table.xml" />
+    <include file="classpath:db/changelogs/05_create_line_table.xml" />
 </databaseChangeLog>

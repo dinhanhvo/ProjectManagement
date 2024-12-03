@@ -2,10 +2,19 @@
 FROM maven:3.9.4-eclipse-temurin-21 AS build
 LABEL authors="Vo Dinh"
 
+RUN mkdir -p /root/.m2
+
 RUN mkdir -p /backend
 WORKDIR /backend
 
+#RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
+#RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests
+
 COPY . /backend
+
+RUN mvn dependency:go-offline -B
+RUN mvn package -DskipTests
+
 RUN mvn package  -DskipTests
 
 #ARG JAR_FILE=target/*.jar
