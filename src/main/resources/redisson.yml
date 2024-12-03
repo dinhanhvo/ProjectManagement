@@ -1,6 +1,6 @@
 singleServerConfig:
-#  address: "redis://localhost:7379"
-  address: "redis://eip-redis:6379" # run by docker-compose
+  address: "redis://localhost:7379" # run app in Intellij
+#  address: "redis://eip-redis:6379" # run by docker-compose
   database: 0
   connectionPoolSize: 64
   connectionMinimumIdleSize: 24

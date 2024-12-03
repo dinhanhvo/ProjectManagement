@@ -4,6 +4,7 @@ package com.vodinh.prime.service;
 import com.vodinh.prime.entities.Line;
 import com.vodinh.prime.entities.User;
 import com.vodinh.prime.mappers.LineMapper;
+import com.vodinh.prime.model.LineDTO;
 import com.vodinh.prime.repositories.LineRepository;
 import com.vodinh.prime.requests.LineRequest;
 import com.vodinh.prime.util.LineSpecification;
@@ -28,18 +29,19 @@ public class LineService {
         this.lineMapper = lineMapper;
     }
 
-    public List<Line> getAllLines() {
+    public List<LineDTO> getAllLines() {
         return lineRepository.findAll().stream().map(lineMapper::toDTO).collect(Collectors.toList());
     }
 
-    public Line getLineById(Long id) {
-        return lineRepository.findById(id).orElse(null);
+    public LineDTO getLineById(Long id) {
+        return lineMapper.toDTO(lineRepository.findById(id).orElse(null));
     }
 
-    public Line getLineByLineId(String lineId) {
-        return lineRepository.findByLineId(lineId).orElseThrow(
-                () -> new EntityNotFoundException("Line with id " + lineId + " not found")
+    public LineDTO getLineByLineId(String lineId) {
+        Line line = lineRepository.findByLineId(lineId).orElseThrow(
+                () -> new EntityNotFoundException(STR."Line with id \{lineId} not found")
         );
+        return lineMapper.toDTO(line);
     }
 
     public List<Line> searchLines(String status, String lineId, String name) {
@@ -63,30 +65,32 @@ public class LineService {
         }
     }
 
-    public List<Line> searchLinesAll(Boolean status, String lineId, String name) {
-//        Boolean bstatus = status.toLowerCase().equals("active");
+    public List<LineDTO> searchLinesAll(Boolean status, String lineId, String name) {
         Specification<Line> spec = Specification.where(LineSpecification.hasStatus(status))
                 .and(LineSpecification.hasLineId(lineId))
                 .and(LineSpecification.hasName(name));
 
-        return lineRepository.findAll(spec);
+        return lineRepository.findAll(spec).stream()
+                .map(lineMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Line createLine(LineRequest lineRequest) {
+    public LineDTO createLine(LineRequest lineRequest) {
         User user = userService.getUserById(lineRequest.getClientId());
-//        Line line = getLineByLineId(lineRequest.getLineId());
         Line line = new Line();
         line.setClient(user);
         BeanUtils.copyProperties(lineRequest, line);
-        return lineRepository.save(line);
+        return lineMapper.toDTO(lineRepository.save(line));
     }
 
-    public Line updateLine(LineRequest lineRequest) {
+    public LineDTO updateLine(LineRequest lineRequest) {
         User user = userService.getUserById(lineRequest.getClientId());
-        Line line = getLineByLineId(lineRequest.getLineId());
+        Line line = lineRepository.findByLineId(lineRequest.getLineId()).orElseThrow(
+                () -> new EntityNotFoundException("Line with id " + lineRequest.getLineId() + " not found")
+        );
         line.setClient(user);
         BeanUtils.copyProperties(lineRequest, line);
-        return lineRepository.save(line);
+        return lineMapper.toDTO(lineRepository.save(line));
     }
 
     public void deleteLine(Long id) {

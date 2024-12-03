@@ -117,8 +117,8 @@ networks:
     name: eip-network
     driver: bridge
 
-# docker-compose -f docker-compose.yml up --build -d eip-redis
-# docker-compose -f docker-compose.yml up --build -d mysql8-eip-container
+# docker-compose -f docker-compose.yml up  -d eip-redis
+# docker-compose -f docker-compose.yml up  -d mysql8-eip-container
 # docker-compose -f docker-compose.yml up --build -d eip-spring-container
 # docker logs eip-spring-container -f
 #  docker run -d -p 7379:6379 eip-redis

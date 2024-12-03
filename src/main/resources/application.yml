@@ -4,7 +4,7 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:mysql://localhost:3308/eip?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3308/eip?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: Eip@2025
     driver-class-name: com.mysql.cj.jdbc.Driver
