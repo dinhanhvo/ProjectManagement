@@ -15,7 +15,6 @@ COPY . /backend
 RUN mvn dependency:go-offline -B
 RUN mvn package -DskipTests
 
-RUN mvn package  -DskipTests
 
 #ARG JAR_FILE=target/*.jar
 #COPY ${JAR_FILE} app.jar
