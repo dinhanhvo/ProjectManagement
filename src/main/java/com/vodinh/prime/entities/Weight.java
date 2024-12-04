@@ -3,7 +3,6 @@ package com.vodinh.prime.entities;
 import com.vodinh.prime.entities.audit.DateAudit;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -32,10 +31,8 @@ public class Weight extends DateAudit {
     @Column(name = "sell_at")
     private LocalDateTime sellAt;
 
-//    @Column(name = "contact_id", nullable = false)
-//    private Long contactId;
-
     @ManyToOne
-    @JoinColumn(name = "contact_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_weights_contact_id"))
+    @JoinColumn(name = "contact_id", nullable = false, referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_weights_contact_id"))
     private User user;
 }

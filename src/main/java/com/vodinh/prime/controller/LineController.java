@@ -5,14 +5,16 @@ import com.vodinh.prime.model.LineDTO;
 import com.vodinh.prime.requests.LineRequest;
 import com.vodinh.prime.service.LineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api")
@@ -47,18 +49,21 @@ public class LineController {
     }
 
     @GetMapping("/line/search")
-    public ResponseEntity<List<LineDTO>> searchLines(
+    public ResponseEntity<Page<LineDTO>> searchLines(
             @RequestParam(required = false) Boolean status,
             @RequestParam(required = false) String lineId,
-            @RequestParam(required = false) String name) {
+            @RequestParam(required = false) String name,
+            Pageable pageable,
+            HttpServletResponse httpServletResponse
+            ) {
 
         log.info("---------------- Searching for lines with status " + status + " and lineId " + lineId);
-        List<LineDTO> lines = lineService.searchLinesAll(status, lineId, name);
+        Page<LineDTO> lines = lineService.searchLinesAll(pageable, status, lineId, name);
+        httpServletResponse.setHeader("X-Total-Count", String.valueOf(lines.getTotalElements()));
         log.info("------------ response: " + lines);
         return ResponseEntity.ok(lines);
     }
 
-    // Tạo mới hoặc cập nhật Line
     @PostMapping("/line")
     public ResponseEntity<LineDTO> createLine(@RequestBody LineRequest line) {
         LineDTO savedLine = lineService.createLine(line);

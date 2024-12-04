@@ -10,26 +10,11 @@ import java.util.Optional;
 
 @Repository
 public interface LineRepository extends JpaRepository<Line, Long>, JpaSpecificationExecutor<Line> {
-    // Các phương thức tùy chỉnh nếu cần
 
     Optional<Line> findByLineId(String lineId);
 
-    // Tìm kiếm theo status, lineId và name
-    List<Line> findByStatusAndLineIdAndName(Boolean status, String lineId, String name);
-
-    // Tìm kiếm theo status và lineId
-    List<Line> findByStatusAndLineId(Boolean status, String lineId);
-
-    // Tìm kiếm theo status và name
-    List<Line> findByStatusAndName(Boolean status, String name);
-
-    // Tìm kiếm theo lineId và name
-    List<Line> findByLineIdAndName(String lineId, String name);
-
-    // Tìm kiếm theo status
     List<Line> findByStatus(Boolean status);
 
-    // Tìm kiếm theo name
     List<Line> findByName(String name);
 }
 

@@ -5,7 +5,10 @@ import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.mappers.WeightMapper;
 import com.vodinh.prime.model.WeightDTO;
 import com.vodinh.prime.repositories.WeightRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +28,16 @@ public class WeightService {
     public Weight getWeightsById(Long id) {
         return weightRepository.findById(id).orElse(null);
     }
-    public List<Weight> getWeightsByUserId(Long userId) {
-        return weightRepository.findByUserId(userId);
+    public Page<Weight> getWeightsByUserId(Pageable pageable, Long userId) {
+        return weightRepository.findByUserId(pageable, userId);
     }
 
-    public List<Weight> getWeightsBySeriNumber(String seriNumber) {
-        return weightRepository.findBySerialNumber(seriNumber);
+    public Weight getWeightsBySeriNumber(String seriNumber) {
+        return weightRepository.findBySerialNumber(seriNumber).orElse(null);
     }
 
-    public List<Weight> getWeightsByModel(String model) {
-        return weightRepository.findByModel(model);
+    public Weight getWeightsByModel(String model) {
+        return weightRepository.findByModel(model).get();
     }
 
     public WeightDTO updateWeight(WeightDTO weightDTO) {

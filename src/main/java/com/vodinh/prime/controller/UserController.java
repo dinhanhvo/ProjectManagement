@@ -6,13 +6,14 @@ import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
 import com.vodinh.prime.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -20,7 +21,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -45,9 +45,13 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> projects = userService.getAllUsers();
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+    public ResponseEntity<Page<User>> getAllUsers(
+            Pageable pageable,
+            HttpServletResponse httpServletResponse
+    ) {
+        Page<User> users = userService.getAllUsers(pageable);
+        httpServletResponse.setHeader("X-Total-Count", String.valueOf(users.getTotalElements()));
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     // delete user by id

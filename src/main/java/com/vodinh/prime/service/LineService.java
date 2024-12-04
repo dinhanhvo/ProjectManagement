@@ -10,6 +10,8 @@ import com.vodinh.prime.requests.LineRequest;
 import com.vodinh.prime.util.LineSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -44,35 +46,14 @@ public class LineService {
         return lineMapper.toDTO(line);
     }
 
-    public List<Line> searchLines(String status, String lineId, String name) {
-        Boolean bstatus = status.toLowerCase().equals("active");
-        if (bstatus != null && lineId != null && name != null) {
-            return lineRepository.findByStatusAndLineIdAndName(bstatus, lineId, name);
-        } else if (bstatus != null && lineId != null) {
-            return lineRepository.findByStatusAndLineId(bstatus, lineId);
-        } else if (bstatus != null && name != null) {
-            return lineRepository.findByStatusAndName(bstatus, name);
-        } else if (lineId != null && name != null) {
-            return lineRepository.findByLineIdAndName(lineId, name);
-        } else if (bstatus != null) {
-            return lineRepository.findByStatus(bstatus);
-        } else if (lineId != null) {
-            return List.of(lineRepository.findByLineId(lineId).orElse(null));
-        } else if (name != null) {
-            return lineRepository.findByName(name);
-        } else {
-            return lineRepository.findAll();  // Trả về tất cả nếu không có tham số nào
-        }
-    }
-
-    public List<LineDTO> searchLinesAll(Boolean status, String lineId, String name) {
+    public Page<LineDTO> searchLinesAll(Pageable pageable, Boolean status, String lineId, String name) {
         Specification<Line> spec = Specification.where(LineSpecification.hasStatus(status))
                 .and(LineSpecification.hasLineId(lineId))
                 .and(LineSpecification.hasName(name));
 
-        return lineRepository.findAll(spec).stream()
-                .map(lineMapper::toDTO)
-                .collect(Collectors.toList());
+        Page<Line> lines = lineRepository.findAll(spec, pageable);
+
+        return lines.map(lineMapper::toDTO);
     }
 
     public LineDTO createLine(LineRequest lineRequest) {
