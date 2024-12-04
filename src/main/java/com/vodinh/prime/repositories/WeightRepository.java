@@ -1,19 +1,19 @@
 package com.vodinh.prime.repositories;
 
 import com.vodinh.prime.entities.Weight;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface WeightRepository extends JpaRepository<Weight, Long> {
-    List<Weight> findByUserId(Long user_id);
+    Page<Weight> findByUserId(Pageable pageable, Long user_id);
 
-    List<Weight> findBySerialNumber(String seriNumber);
+    Optional<Weight> findBySerialNumber(String serialNumber);
 
-    List<Weight> findByModel(String model);
+    Optional<Weight> findByModel(String model);
 
-    Optional<Weight> findById(Long id);
 }

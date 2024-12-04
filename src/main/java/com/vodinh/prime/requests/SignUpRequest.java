@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignUpRequest {
     @NotBlank
-    @Size(min = 4, max = 55)
+    @Size(min = 2, max = 55)
     private String name;
 
     @NotBlank

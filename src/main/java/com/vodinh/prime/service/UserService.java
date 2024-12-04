@@ -1,7 +1,6 @@
 package com.vodinh.prime.service;
 
 
-import com.vodinh.prime.controller.AuthController;
 import com.vodinh.prime.entities.Role;
 import com.vodinh.prime.entities.User;
 import com.vodinh.prime.enums.RoleEnum;
@@ -11,11 +10,12 @@ import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -57,8 +57,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findByDeletedFalse();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findByDeletedFalse(pageable);
+    }
+
+    public Page<User> getAllCustomer(Pageable pageable) {
+        return userRepository.findByDeletedFalse(pageable);
     }
 
     public User getUserById(Long id) {
@@ -95,15 +99,15 @@ public class UserService {
         return userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail());
     }
 
-    public List<User> getAllActiveUsers() {
-        return userRepository.findByDeletedFalse();
+    public Page<User> getAllActiveUsers(Pageable pageable) {
+        return userRepository.findByDeletedFalse(pageable);
     }
 
-    public List<User> getAllActiveCustomer() {
-        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull();
+    public Page<User> getAllActiveCustomer(Pageable pageable) {
+        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull(pageable);
     }
 
-    public List<User> getCustomerByPhone() {
-        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull();
+    public Page<User> getCustomerByPhone(Pageable pageable) {
+        return userRepository.findByDeletedFalseAndCompanyNameIsNotNull(pageable);
     }
 }

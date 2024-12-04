@@ -1,21 +1,22 @@
 package com.vodinh.prime.repositories;
 
 import com.vodinh.prime.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByDeletedFalse();
+    Page<User> findByDeletedFalse(Pageable pageable);
 
-    List<User> findByDeletedFalseAndCompanyNameIsNotNull();
+    Page<User> findByDeletedFalseAndCompanyNameIsNotNull(Pageable pageable);
 
     Optional<User> findByEmail(String email);
 
     Optional<User> findByUsernameOrEmail(String username, String email);
 
-    List<User> findByIdIn(List<Long> userIds);
+    Page<User> findByIdIn(Pageable pageable, Page<Long> userIds);
 
     Optional<User> findByUsername(String username);
 
@@ -23,5 +24,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
 
-//    List<User> findByPhoneOrCompanyPhoneIs(String phone);
+//    Page<User> findByPhoneOrCompanyPhoneIs(String phone);
 }

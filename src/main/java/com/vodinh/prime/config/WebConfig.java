@@ -2,11 +2,15 @@ package com.vodinh.prime.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -19,6 +23,15 @@ public class WebConfig {
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
+        };
+    }
+
+    @Bean
+    public PageableHandlerMethodArgumentResolverCustomizer customizePageable() {
+        return resolver -> {
+            // Thiết lập Pageable mặc định
+            Pageable defaultPageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
+            resolver.setFallbackPageable(defaultPageable);
         };
     }
 }

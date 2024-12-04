@@ -6,14 +6,14 @@ import com.vodinh.prime.requests.CreateCustomerRequest;
 import com.vodinh.prime.responses.ApiResponse;
 import com.vodinh.prime.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -70,9 +70,14 @@ public class CustomerController {
 
 
     @GetMapping("/customers")
-    public ResponseEntity<List<User>> getCustomer() {
-        List<User> projects = userService.getAllActiveCustomer();
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+    public ResponseEntity<Page<User>> getCustomer(
+            Pageable pageable,
+            HttpServletResponse response
+    ) {
+
+        Page<User> customers = userService.getAllCustomer(pageable);
+        response.setHeader("X-Total-Count", String.valueOf(customers.getTotalElements()));
+        return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
     @GetMapping("/customer/{id}")
