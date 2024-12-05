@@ -15,6 +15,7 @@ docker stop eip-spring-container || echo "Container not running, proceeding."
 echo ">>> Removing the Docker container: eip-spring-container"
 docker rm eip-spring-container || echo "Container not present, proceeding."
 
+
 echo ">>> Starting Docker container with Docker Compose"
 docker-compose -f docker-compose.yml up --build -d eip-spring-container || { echo "Docker Compose failed. Exiting."; exit 1; }
 

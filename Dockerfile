@@ -12,8 +12,8 @@ WORKDIR /backend
 
 COPY . /backend
 
-RUN mvn dependency:go-offline -B
-RUN mvn package -DskipTests
+#RUN mvn dependency:go-offline -B
+#RUN mvn package -DskipTests
 
 
 #ARG JAR_FILE=target/*.jar
