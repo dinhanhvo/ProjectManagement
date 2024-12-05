@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create-factory-table" author="Vo Dinh">
+        <!-- Tạo bảng Factory -->
+        <createTable tableName="factory">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="factory_id" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Thêm khóa ngoại cho region_id -->
+        <addForeignKeyConstraint
+                baseTableName="factory"
+                baseColumnNames="region_id"
+                referencedTableName="region"
+                referencedColumnNames="region_id"
+                constraintName="fk_factory_region"/>
+    </changeSet>
+
+</databaseChangeLog>

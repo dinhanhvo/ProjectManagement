@@ -73,7 +73,7 @@ public class LineController {
     // Cập nhật Line theo ID
     @PutMapping("/line/{id}")
     public ResponseEntity<LineDTO> updateLine(@PathVariable Long id, @RequestBody LineRequest line) {
-        LineDTO updatedLine = lineService.updateLine(line);
+        LineDTO updatedLine = lineService.updateLine(id, line);
         return ResponseEntity.ok(updatedLine);
     }
 
