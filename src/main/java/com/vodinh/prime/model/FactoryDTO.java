@@ -1,6 +1,5 @@
 package com.vodinh.prime.model;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegionDTO {
+public class FactoryDTO extends BaseDTO {
     private Long id;
-    @NotBlank
-    private String regionId;
-    @NotBlank
+    private String factoryId;
     private String name;
+    private String regionId;
+    private String regionName;
     private Boolean status;
 }

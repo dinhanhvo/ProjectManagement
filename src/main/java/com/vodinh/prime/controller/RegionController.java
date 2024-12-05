@@ -1,11 +1,9 @@
 package com.vodinh.prime.controller;
 
-import com.vodinh.prime.model.LineDTO;
 import com.vodinh.prime.model.RegionDTO;
 import com.vodinh.prime.service.RegionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
