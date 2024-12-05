@@ -64,13 +64,13 @@ public class LineService {
         return lineMapper.toDTO(lineRepository.save(line));
     }
 
-    public LineDTO updateLine(LineRequest lineRequest) {
+    public LineDTO updateLine(Long id, LineRequest lineRequest) {
         User user = userService.getUserById(lineRequest.getClientId());
-        Line line = lineRepository.findByLineId(lineRequest.getLineId()).orElseThrow(
+        Line line = lineRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Line with id " + lineRequest.getLineId() + " not found")
         );
-        line.setClient(user);
         BeanUtils.copyProperties(lineRequest, line);
+        line.setClient(user);
         return lineMapper.toDTO(lineRepository.save(line));
     }
 
