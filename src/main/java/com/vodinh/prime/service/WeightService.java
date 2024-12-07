@@ -83,7 +83,7 @@ public class WeightService {
         weight.setUser(user);
 
         if (Objects.nonNull(weightRequest.getLineId()) && weightRequest.getLineId() > 0) {
-            Line line = lineRepository.findByClientAndId(user, weightRequest.getLineId()).get();
+            Line line = lineRepository.findById(weightRequest.getLineId()).get();
             weight.setLine(line);
         }
 
