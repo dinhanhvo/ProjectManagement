@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class WeightRequest {
 
     private Long id;
+    private String name;
 
     @NotBlank
     private String serialNumber;
@@ -24,6 +25,8 @@ public class WeightRequest {
 
     @NotBlank
     private Double quyCach;
+
+    private String status;
 
     private LocalDateTime sellAt;
 
