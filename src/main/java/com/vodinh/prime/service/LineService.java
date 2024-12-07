@@ -46,10 +46,11 @@ public class LineService {
         return lineMapper.toDTO(line);
     }
 
-    public Page<LineDTO> searchLinesAll(Pageable pageable, Boolean status, String lineId, String name) {
+    public Page<LineDTO> searchLinesAll(Pageable pageable, Boolean status, String lineId, String name, Long clientId) {
         Specification<Line> spec = Specification.where(LineSpecification.hasStatus(status))
                 .and(LineSpecification.hasLineId(lineId))
-                .and(LineSpecification.hasName(name));
+                .and(LineSpecification.hasName(name))
+                .and(LineSpecification.hasClientId(clientId));
 
         Page<Line> lines = lineRepository.findAll(spec, pageable);
 

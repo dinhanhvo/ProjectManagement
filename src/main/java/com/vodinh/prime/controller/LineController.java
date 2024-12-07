@@ -53,12 +53,13 @@ public class LineController {
             @RequestParam(required = false) Boolean status,
             @RequestParam(required = false) String lineId,
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long clientId,
             Pageable pageable,
             HttpServletResponse httpServletResponse
             ) {
 
         log.info("---------------- Searching for lines with status " + status + " and lineId " + lineId);
-        Page<LineDTO> lines = lineService.searchLinesAll(pageable, status, lineId, name);
+        Page<LineDTO> lines = lineService.searchLinesAll(pageable, status, lineId, name, clientId);
         httpServletResponse.setHeader("X-Total-Count", String.valueOf(lines.getTotalElements()));
         log.info("------------ response: " + lines);
         return ResponseEntity.ok(lines);
