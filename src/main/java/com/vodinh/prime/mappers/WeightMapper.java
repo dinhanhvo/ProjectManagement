@@ -11,9 +11,12 @@ public interface WeightMapper {
     @Mapping(source = "user.id", target = "contactId")
     @Mapping(source = "user.username", target = "contactUsername")
     @Mapping(source = "user.name", target = "contactName")
+    @Mapping(source = "line.id", target = "lineId")
+    @Mapping(source = "line.name", target = "lineName")
     WeightDTO toDTO(Weight weight);
 
-    @Mapping(source = "contactId", target = "user.id")
+//    @Mapping(source = "contactId", target = "user.id")
+//    @Mapping(target = "line.id", source = "lineId", ignore = true)
     @Mapping(source = "sellAt", target = "sellAt", defaultExpression = "java(java.time.LocalDateTime.now())")
     Weight toEntity(WeightDTO weightDTO);
 }

@@ -34,15 +34,12 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
 
-    private final UserService userService;
-
     private final CustomUserDetailsService customUserDetailsService;
 
     private final JwtTokenProvider tokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, CustomUserDetailsService customUserDetailsService, JwtTokenProvider tokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
         this.customUserDetailsService = customUserDetailsService;
         this.tokenProvider = tokenProvider;
     }

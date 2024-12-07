@@ -38,6 +38,7 @@ public class UserService {
     }
     @Transactional(readOnly = false)
     public User createUser(User user, String role) {
+        user.setCode(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleRepository.findByName(role)
@@ -58,11 +59,16 @@ public class UserService {
     }
 
     public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findByDeletedFalse(pageable);
+        Page<User> users = userRepository.findByDeletedFalse(pageable);
+        return users.map(user -> {
+            user.setPassword(user.getCode());
+            user.setCode(null);
+            return user;
+        });
     }
 
     public Page<User> getAllCustomer(Pageable pageable) {
-        return userRepository.findByDeletedFalse(pageable);
+        return getAllUsers(pageable);
     }
 
     public User getUserById(Long id) {

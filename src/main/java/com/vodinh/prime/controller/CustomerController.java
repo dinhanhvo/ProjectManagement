@@ -59,7 +59,7 @@ public class CustomerController {
         BeanUtils.copyProperties(createCustomerRequest, user);
 
         if (userService.isExistedUser(user)) {
-            return new ResponseEntity<>(new ApiResponse(false, "Info was already created!"),
+            return new ResponseEntity<>(new ApiResponse(false, "Info was already existed!"),
                     HttpStatus.BAD_REQUEST);
         }
 
