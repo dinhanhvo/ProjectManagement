@@ -8,9 +8,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api")
@@ -29,26 +32,39 @@ public class WeightController {
         return  ResponseEntity.ok(result);
     }
 
+    @GetMapping("/weight/search")
+    public ResponseEntity<Page<WeightDTO>> searchWeights(
+            @RequestParam(required = false) String serialNumber,
+            @RequestParam(required = false) Long contactId,
+            @RequestParam(required = false) Long lineId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromSellAt,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toSellAt,
+            Pageable pageable) {
+
+        Page<WeightDTO> weightDTOs = weightService.searchWeights(serialNumber, contactId, lineId, fromSellAt, toSellAt, pageable);
+        return ResponseEntity.ok(weightDTOs);
+    }
+
     @GetMapping("/weights/user/{userId}")
-    public ResponseEntity<Page<Weight>>  getWeightsByUserId(
+    public ResponseEntity<Page<WeightDTO>>  getWeightsByUserId(
             @PathVariable Long userId,
             Pageable pageable,
             HttpServletResponse httpServletResponse
             ) {
-        Page<Weight> result = weightService.getWeightsByUserId(pageable, userId);
+        Page<WeightDTO> result = weightService.getWeightsByUserId(pageable, userId);
         httpServletResponse.setHeader("X-Total-Count", String.valueOf(result.getTotalElements()));
         return  ResponseEntity.ok(result);
     }
 
     @GetMapping("/weights/seri/{seriNumber}")
-    public ResponseEntity<Weight> getWeightsBySerialNumber(@PathVariable String serialNumber) {
-        Weight result = weightService.getWeightsBySeriNumber(serialNumber);
+    public ResponseEntity<WeightDTO> getWeightsBySerialNumber(@PathVariable String serialNumber) {
+        WeightDTO result = weightService.getWeightsBySeriNumber(serialNumber);
         return  ResponseEntity.ok(result);
     }
 
     @GetMapping("/weights/model/{model}")
-    public ResponseEntity<Weight> getWeightsByModel(@PathVariable String model) {
-        Weight result = weightService.getWeightsByModel(model);
+    public ResponseEntity<WeightDTO> getWeightsByModel(@PathVariable String model) {
+        WeightDTO result = weightService.getWeightsByModel(model);
         return  ResponseEntity.ok(result);
     }
 
