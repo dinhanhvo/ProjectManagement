@@ -1,6 +1,7 @@
 package com.vodinh.prime.controller;
 
 import com.vodinh.prime.entities.Weight;
+import com.vodinh.prime.enums.WeightStatus;
 import com.vodinh.prime.model.WeightDTO;
 import com.vodinh.prime.requests.WeightRequest;
 import com.vodinh.prime.service.WeightService;
@@ -37,11 +38,16 @@ public class WeightController {
             @RequestParam(required = false) String serialNumber,
             @RequestParam(required = false) Long contactId,
             @RequestParam(required = false) Long lineId,
+            @RequestParam(required = false) WeightStatus status,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String model,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromSellAt,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toSellAt,
             Pageable pageable) {
 
-        Page<WeightDTO> weightDTOs = weightService.searchWeights(serialNumber, contactId, lineId, fromSellAt, toSellAt, pageable);
+        Page<WeightDTO> weightDTOs = weightService.searchWeights(serialNumber, contactId, lineId, status,
+                name, model,
+                fromSellAt, toSellAt, pageable);
         return ResponseEntity.ok(weightDTOs);
     }
 

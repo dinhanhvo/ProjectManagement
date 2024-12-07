@@ -3,6 +3,7 @@ package com.vodinh.prime.service;
 import com.vodinh.prime.entities.Line;
 import com.vodinh.prime.entities.User;
 import com.vodinh.prime.entities.Weight;
+import com.vodinh.prime.enums.WeightStatus;
 import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.mappers.WeightMapper;
 import com.vodinh.prime.model.WeightDTO;
@@ -102,11 +103,14 @@ public class WeightService {
     }
 
     public Page<WeightDTO> searchWeights(String serialNumber, Long contactId, Long lineId,
-                                         LocalDateTime fromSellAt, LocalDateTime toSellAt, Pageable pageable) {
+                                         WeightStatus weightStatus, String name, String model,
+                                         LocalDateTime fromSellAt, LocalDateTime toSellAt,
+                                         Pageable pageable) {
         if (Objects.isNull(toSellAt)) {
             toSellAt = LocalDateTime.now();
         }
-        Specification<Weight> specification = WeightSpecification.search(serialNumber, contactId, lineId, fromSellAt, toSellAt);
+        Specification<Weight> specification = WeightSpecification.search(serialNumber, contactId,
+                lineId, weightStatus, name, model, fromSellAt, toSellAt);
         Page<Weight> weights = weightRepository.findAll(specification, pageable);
         return weights.map(weightMapper::toDTO);
     }

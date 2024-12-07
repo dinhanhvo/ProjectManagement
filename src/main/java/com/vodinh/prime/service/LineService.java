@@ -7,7 +7,7 @@ import com.vodinh.prime.mappers.LineMapper;
 import com.vodinh.prime.model.LineDTO;
 import com.vodinh.prime.repositories.LineRepository;
 import com.vodinh.prime.requests.LineRequest;
-import com.vodinh.prime.util.LineSpecification;
+import com.vodinh.prime.specification.LineSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
