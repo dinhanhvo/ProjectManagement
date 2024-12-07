@@ -10,11 +10,14 @@ import com.vodinh.prime.repositories.LineRepository;
 import com.vodinh.prime.repositories.UserRepository;
 import com.vodinh.prime.repositories.WeightRepository;
 import com.vodinh.prime.requests.WeightRequest;
+import com.vodinh.prime.specification.WeightSpecification;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -35,16 +38,16 @@ public class WeightService {
     public Weight getWeightsById(Long id) {
         return weightRepository.findById(id).orElse(null);
     }
-    public Page<Weight> getWeightsByUserId(Pageable pageable, Long userId) {
-        return weightRepository.findByUserId(pageable, userId);
+    public Page<WeightDTO> getWeightsByUserId(Pageable pageable, Long userId) {
+        return weightRepository.findByUserId(pageable, userId).map(weightMapper::toDTO);
     }
 
-    public Weight getWeightsBySeriNumber(String seriNumber) {
-        return weightRepository.findBySerialNumber(seriNumber).orElse(null);
+    public WeightDTO getWeightsBySeriNumber(String seriNumber) {
+        return weightMapper.toDTO(weightRepository.findBySerialNumber(seriNumber).orElse(null));
     }
 
-    public Weight getWeightsByModel(String model) {
-        return weightRepository.findByModel(model).get();
+    public WeightDTO getWeightsByModel(String model) {
+        return weightMapper.toDTO(weightRepository.findByModel(model).get());
     }
 
 //    public WeightDTO updateWeight(WeightDTO weightDTO) {
@@ -91,5 +94,15 @@ public class WeightService {
     public boolean deleteWeight(Long weightId) {
         weightRepository.deleteById(weightId);
         return true;
+    }
+
+    public Page<WeightDTO> searchWeights(String serialNumber, Long contactId, Long lineId,
+                                         LocalDateTime fromSellAt, LocalDateTime toSellAt, Pageable pageable) {
+        if (Objects.isNull(toSellAt)) {
+            toSellAt = LocalDateTime.now();
+        }
+        Specification<Weight> specification = WeightSpecification.search(serialNumber, contactId, lineId, fromSellAt, toSellAt);
+        Page<Weight> weights = weightRepository.findAll(specification, pageable);
+        return weights.map(weightMapper::toDTO);
     }
 }

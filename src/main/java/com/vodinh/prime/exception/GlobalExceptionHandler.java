@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleConstraintViolation(Exception ex) {
         log.error(" SQL Error: 1452, SQLState: 23000 foreign key violent: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Vi phạm ràng buộc khóa ngoại");
+                .body("Vi phạm ràng buộc");
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
