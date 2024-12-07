@@ -26,4 +26,6 @@ public class WeightDTO extends BaseDTO{
     private Long contactId;
     private String contactName;
     private String contactUsername;
+    private Long lineId; // ID của Line
+    private String lineName; // Tên của Line (nếu cần)
 }

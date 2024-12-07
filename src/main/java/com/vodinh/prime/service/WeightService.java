@@ -1,9 +1,11 @@
 package com.vodinh.prime.service;
 
+import com.vodinh.prime.entities.Line;
 import com.vodinh.prime.entities.Weight;
 import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.mappers.WeightMapper;
 import com.vodinh.prime.model.WeightDTO;
+import com.vodinh.prime.repositories.LineRepository;
 import com.vodinh.prime.repositories.WeightRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -19,10 +21,12 @@ public class WeightService {
 
     private final WeightRepository weightRepository;
     private final WeightMapper weightMapper;
+    private final LineRepository lineRepository;
 
-    public WeightService(WeightRepository weightRepository, WeightMapper weightMapper) {
+    public WeightService(WeightRepository weightRepository, WeightMapper weightMapper, LineRepository lineRepository) {
         this.weightRepository = weightRepository;
         this.weightMapper = weightMapper;
+        this.lineRepository = lineRepository;
     }
 
     public Weight getWeightsById(Long id) {
@@ -44,12 +48,15 @@ public class WeightService {
         Optional<Weight> w = Optional.ofNullable(weightRepository.findById(weightDTO.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Weight not existed", "id", weightDTO.getId())
         ));
-        Weight found = w.get();
-        if (found.getId().equals(weightDTO.getId())) {
-            BeanUtils.copyProperties(weightDTO, found);
+        if (weightDTO.getId() > 0) {
         } else {
-            throw new ResourceNotFoundException("Weight not existed", "id", weightDTO.getId());
+            throw new ResourceNotFoundException("Line not existed", "lineId", weightDTO.getLineId());
         }
+        Weight found = w.get();
+        Line line = lineRepository.findById(weightDTO.getId()).get();
+        found.setLine(line);
+        BeanUtils.copyProperties(weightDTO, found);
+
         return weightMapper.toDTO(weightRepository.save(found));
     }
 

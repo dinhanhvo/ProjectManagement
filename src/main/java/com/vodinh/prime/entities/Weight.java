@@ -35,4 +35,8 @@ public class Weight extends DateAudit {
     @JoinColumn(name = "contact_id", nullable = false, referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_weights_contact_id"))
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "line_id", nullable = false)
+    private Line line;
 }
