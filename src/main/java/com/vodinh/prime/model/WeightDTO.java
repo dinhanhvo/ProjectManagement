@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class WeightDTO extends BaseDTO{
     private Long id;
+    private String name;
+
     @NotBlank
     private String serialNumber;
     @NotBlank
@@ -28,4 +30,6 @@ public class WeightDTO extends BaseDTO{
     private String contactUsername;
     private Long lineId; // ID của Line
     private String lineName; // Tên của Line (nếu cần)
+
+    private String status;
 }

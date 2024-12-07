@@ -53,7 +53,6 @@ public class CustomerController {
         return  ResponseEntity.ok(result);
     }
 
-
     @GetMapping("/customers")
     public ResponseEntity<Page<User>> getCustomer(
             Pageable pageable,

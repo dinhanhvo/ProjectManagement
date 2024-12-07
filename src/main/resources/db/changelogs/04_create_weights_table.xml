@@ -40,4 +40,22 @@
             <column name="sell_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="add-status-column-to-weights" author="yourname">
+        <addColumn tableName="weights">
+            <column name="status" type="VARCHAR(50)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-name-column-to-weights" author="yourname">
+        <addColumn tableName="weights">
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>

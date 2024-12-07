@@ -1,6 +1,7 @@
 package com.vodinh.prime.specification;
 
 import com.vodinh.prime.entities.Weight;
+import com.vodinh.prime.enums.WeightStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class WeightSpecification {
 
     public static Specification<Weight> search(String serialNumber, Long contactId,
-                                               Long lineId,
+                                               Long lineId, WeightStatus weightStatus,
                                                LocalDateTime fromSellAt, LocalDateTime toSellAt) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -33,6 +34,10 @@ public class WeightSpecification {
             // Tham số line_id
             if (lineId != null) {
                 predicates.add(criteriaBuilder.equal(root.get("line").get("id"), lineId));
+            }
+
+            if (weightStatus != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), weightStatus));
             }
 
             // Tham số sell_at (from ... to)

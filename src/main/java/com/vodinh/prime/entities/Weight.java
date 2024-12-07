@@ -1,6 +1,7 @@
 package com.vodinh.prime.entities;
 
 import com.vodinh.prime.entities.audit.DateAudit;
+import com.vodinh.prime.enums.WeightStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class Weight extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @Column(name = "serial_number", nullable = false, length = 255)
     private String serialNumber;
 
@@ -30,6 +33,9 @@ public class Weight extends DateAudit {
 
     @Column(name = "sell_at")
     private LocalDateTime sellAt;
+
+    @Enumerated(EnumType.STRING)
+    private WeightStatus status;
 
     @ManyToOne
     @JoinColumn(name = "contact_id", nullable = false)

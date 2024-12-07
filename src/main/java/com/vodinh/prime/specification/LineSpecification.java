@@ -1,4 +1,4 @@
-package com.vodinh.prime.util;
+package com.vodinh.prime.specification;
 
 import com.vodinh.prime.entities.Line;
 import org.springframework.data.jpa.domain.Specification;
