@@ -27,6 +27,7 @@ public class WeightRequest {
 
     private LocalDateTime sellAt;
 
+    @NotBlank
     private Long contactId;
 
     private Long lineId; // ID của Line

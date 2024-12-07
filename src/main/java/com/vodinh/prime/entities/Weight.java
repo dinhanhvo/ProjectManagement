@@ -32,11 +32,10 @@ public class Weight extends DateAudit {
     private LocalDateTime sellAt;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", nullable = false, referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_weights_contact_id"))
+    @JoinColumn(name = "contact_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "line_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "line_id", nullable = false)
     private Line line;
 }
