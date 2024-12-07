@@ -1,20 +1,21 @@
 package com.vodinh.prime.service;
 
 import com.vodinh.prime.entities.Line;
+import com.vodinh.prime.entities.User;
 import com.vodinh.prime.entities.Weight;
 import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.mappers.WeightMapper;
 import com.vodinh.prime.model.WeightDTO;
 import com.vodinh.prime.repositories.LineRepository;
+import com.vodinh.prime.repositories.UserRepository;
 import com.vodinh.prime.repositories.WeightRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.vodinh.prime.requests.WeightRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class WeightService {
@@ -22,11 +23,13 @@ public class WeightService {
     private final WeightRepository weightRepository;
     private final WeightMapper weightMapper;
     private final LineRepository lineRepository;
+    private final UserRepository userRepository;
 
-    public WeightService(WeightRepository weightRepository, WeightMapper weightMapper, LineRepository lineRepository) {
+    public WeightService(WeightRepository weightRepository, WeightMapper weightMapper, LineRepository lineRepository, UserRepository userRepository) {
         this.weightRepository = weightRepository;
         this.weightMapper = weightMapper;
         this.lineRepository = lineRepository;
+        this.userRepository = userRepository;
     }
 
     public Weight getWeightsById(Long id) {
@@ -44,25 +47,43 @@ public class WeightService {
         return weightRepository.findByModel(model).get();
     }
 
-    public WeightDTO updateWeight(WeightDTO weightDTO) {
-        Optional<Weight> w = Optional.ofNullable(weightRepository.findById(weightDTO.getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Weight not existed", "id", weightDTO.getId())
-        ));
-        if (weightDTO.getId() > 0) {
+//    public WeightDTO updateWeight(WeightDTO weightDTO) {
+//        Optional<Weight> w = Optional.ofNullable(weightRepository.findById(weightDTO.getId()).orElseThrow(
+//                () -> new ResourceNotFoundException("Weight not existed", "id", weightDTO.getId())
+//        ));
+//        if (weightDTO.getId() > 0) {
+//        } else {
+//            throw new ResourceNotFoundException("Line not existed", "lineId", weightDTO.getLineId());
+//        }
+//        Weight found = w.get();
+//        Line line = lineRepository.findById(weightDTO.getId()).get();
+//        found.setLine(line);
+//        BeanUtils.copyProperties(weightDTO, found);
+//
+//        return weightMapper.toDTO(weightRepository.save(found));
+//    }
+
+    public WeightDTO upsertWeight(WeightRequest weightRequest) {
+        Weight weight;
+
+        if (Objects.nonNull(weightRequest.getId()) && weightRequest.getId() > 0) {
+            weight = weightRepository.findById(weightRequest.getId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Weight not existed", "id", weightRequest.getId())
+            );
         } else {
-            throw new ResourceNotFoundException("Line not existed", "lineId", weightDTO.getLineId());
+            weight = new Weight();
+            BeanUtils.copyProperties(weightRequest, weight);
         }
-        Weight found = w.get();
-        Line line = lineRepository.findById(weightDTO.getId()).get();
-        found.setLine(line);
-        BeanUtils.copyProperties(weightDTO, found);
 
-        return weightMapper.toDTO(weightRepository.save(found));
-    }
+        User user = userRepository.findById(weightRequest.getContactId()).get();
+        weight.setUser(user);
 
-    public WeightDTO createWeight(WeightDTO weightDTO) {
-        Weight w = weightMapper.toEntity(weightDTO);
-        Weight saved = weightRepository.save(w);
+        if (Objects.nonNull(weightRequest.getLineId()) && weightRequest.getLineId() > 0) {
+            Line line = lineRepository.findById(weightRequest.getLineId()).get();
+            weight.setLine(line);
+        }
+
+        Weight saved = weightRepository.save(weight);
         return weightMapper.toDTO(saved);
     }
 
