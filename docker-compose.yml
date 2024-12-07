@@ -124,6 +124,10 @@ networks:
 #  docker run -d -p 7379:6379 eip-redis
 # docker exec -it mysql8-eip-container /bin/sh
 
+#
+# mysqldump -u root -p --host=127.0.0.1 --port=3308 eip > backup.sql
+
+
 #curl -u elastic:123 -X POST "http://localhost:9200/_security/service/your-service-account-name/token" -H 'Content-Type: application/json' -d'
 #  {
 #    "expiration": "1d"
