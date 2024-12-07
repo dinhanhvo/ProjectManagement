@@ -12,6 +12,7 @@ import com.vodinh.prime.repositories.WeightRepository;
 import com.vodinh.prime.requests.WeightRequest;
 import com.vodinh.prime.specification.WeightSpecification;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -38,6 +39,7 @@ public class WeightService {
     public Weight getWeightsById(Long id) {
         return weightRepository.findById(id).orElse(null);
     }
+
     public Page<WeightDTO> getWeightsByUserId(Pageable pageable, Long userId) {
         return weightRepository.findByUserId(pageable, userId).map(weightMapper::toDTO);
     }
@@ -84,6 +86,9 @@ public class WeightService {
 
         if (Objects.nonNull(weightRequest.getLineId()) && weightRequest.getLineId() > 0) {
             Line line = lineRepository.findById(weightRequest.getLineId()).get();
+            if (!Objects.equals(line.getClient().getId(), user.getId())) {
+                throw new DataIntegrityViolationException("User  " + user.getClientId() +" chưa tạo line " + line.getLineId());
+            }
             weight.setLine(line);
         }
 

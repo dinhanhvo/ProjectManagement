@@ -17,12 +17,18 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-//    SQL Error: 1452, SQLState: 23000 foreign key violent
-    @ExceptionHandler({org.hibernate.exception.ConstraintViolationException.class, DataIntegrityViolationException.class})
+    @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolation(Exception ex) {
         log.error(" SQL Error: 1452, SQLState: 23000 foreign key violent: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Vi phạm ràng buộc");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(Exception ex) {
+        log.error(" SQL Error: 1062, SQLState: 23000 foreign key violent: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Duplicate entry");
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

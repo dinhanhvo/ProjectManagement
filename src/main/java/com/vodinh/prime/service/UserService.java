@@ -8,8 +8,10 @@ import com.vodinh.prime.exception.AppException;
 import com.vodinh.prime.exception.ResourceNotFoundException;
 import com.vodinh.prime.repositories.RoleRepository;
 import com.vodinh.prime.repositories.UserRepository;
+import com.vodinh.prime.requests.CreateCustomerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,10 +52,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public User updateUser(User user, boolean updatePass) {
-        if (updatePass) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+    public User updateUser(CreateCustomerRequest createCustomerRequest) {
+        User user = userRepository.findById(createCustomerRequest.getId()).get();
+        user.setCode(createCustomerRequest.getPassword());
+
+        BeanUtils.copyProperties(createCustomerRequest, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
