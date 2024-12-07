@@ -37,6 +37,6 @@ public class Weight extends DateAudit {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "line_id", nullable = false)
+    @JoinColumn(name = "line_id", nullable = false, referencedColumnName = "id")
     private Line line;
 }
