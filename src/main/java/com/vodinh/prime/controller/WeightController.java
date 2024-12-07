@@ -39,11 +39,14 @@ public class WeightController {
             @RequestParam(required = false) Long contactId,
             @RequestParam(required = false) Long lineId,
             @RequestParam(required = false) WeightStatus status,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String model,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromSellAt,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toSellAt,
             Pageable pageable) {
 
         Page<WeightDTO> weightDTOs = weightService.searchWeights(serialNumber, contactId, lineId, status,
+                name, model,
                 fromSellAt, toSellAt, pageable);
         return ResponseEntity.ok(weightDTOs);
     }

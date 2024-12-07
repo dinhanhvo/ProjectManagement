@@ -103,14 +103,14 @@ public class WeightService {
     }
 
     public Page<WeightDTO> searchWeights(String serialNumber, Long contactId, Long lineId,
-                                         WeightStatus weightStatus,
+                                         WeightStatus weightStatus, String name, String model,
                                          LocalDateTime fromSellAt, LocalDateTime toSellAt,
                                          Pageable pageable) {
         if (Objects.isNull(toSellAt)) {
             toSellAt = LocalDateTime.now();
         }
         Specification<Weight> specification = WeightSpecification.search(serialNumber, contactId,
-                lineId, weightStatus, fromSellAt, toSellAt);
+                lineId, weightStatus, name, model, fromSellAt, toSellAt);
         Page<Weight> weights = weightRepository.findAll(specification, pageable);
         return weights.map(weightMapper::toDTO);
     }

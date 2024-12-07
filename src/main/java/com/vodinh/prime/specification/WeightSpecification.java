@@ -14,6 +14,7 @@ public class WeightSpecification {
 
     public static Specification<Weight> search(String serialNumber, Long contactId,
                                                Long lineId, WeightStatus weightStatus,
+                                               String name, String model,
                                                LocalDateTime fromSellAt, LocalDateTime toSellAt) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -38,6 +39,16 @@ public class WeightSpecification {
 
             if (weightStatus != null) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), weightStatus));
+            }
+
+            // Thêm điều kiện tìm kiếm theo name
+            if (name != null && !name.isBlank()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+            }
+
+            // Thêm điều kiện tìm kiếm theo model
+            if (model != null && !model.isBlank()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("model")), "%" + model.toLowerCase() + "%"));
             }
 
             // Tham số sell_at (from ... to)
