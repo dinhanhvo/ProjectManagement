@@ -62,7 +62,7 @@ public class WeightController {
         return  ResponseEntity.ok(result);
     }
 
-    @GetMapping("/weights/seri/{seriNumber}")
+    @GetMapping("/weights/serial/{serialNumber}")
     public ResponseEntity<WeightDTO> getWeightsBySerialNumber(@PathVariable String serialNumber) {
         WeightDTO result = weightService.getWeightsBySeriNumber(serialNumber);
         return  ResponseEntity.ok(result);
