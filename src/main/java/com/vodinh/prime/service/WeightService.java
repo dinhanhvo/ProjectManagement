@@ -72,8 +72,9 @@ public class WeightService {
             );
         } else {
             weight = new Weight();
-            BeanUtils.copyProperties(weightRequest, weight);
         }
+
+        BeanUtils.copyProperties(weightRequest, weight);
 
         User user = userRepository.findById(weightRequest.getContactId()).get();
         weight.setUser(user);

@@ -23,7 +23,7 @@ public class Line  extends DateAudit  {
     private String lineId;
 
     @Column(nullable = false, length = 0)
-    private Boolean status;
+    private Boolean status = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)

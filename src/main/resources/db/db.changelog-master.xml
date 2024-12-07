@@ -15,4 +15,5 @@
     <include file="classpath:db/changelogs/08-add-code-column-to-users.xml" />
     <include file="classpath:db/changelogs/09-add-line-column-to-weight.xml" />
     <include file="classpath:db/changelogs/10-update_line_id_nullable_to_true.xml" />
+    <include file="classpath:db/changelogs/11-add_unique_constraint_to_serial_number.xml" />
 </databaseChangeLog>

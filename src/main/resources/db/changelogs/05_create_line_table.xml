@@ -37,4 +37,10 @@
                 constraintName="fk_line_users_clientId" />
     </changeSet>
 
+    <changeSet id="add-unique-constraint-line-id" author="your-name">
+        <addUniqueConstraint
+                columnNames="line_id"
+                tableName="line"
+                constraintName="unique_line"/>
+    </changeSet>
 </databaseChangeLog>

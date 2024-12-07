@@ -31,4 +31,12 @@ public class LineSpecification {
             return criteriaBuilder.like(root.get("name"), "%" + name + "%");
         };
     }
+    public static Specification<Line> hasClientId(Long clientId) {
+        return (root, query, criteriaBuilder) -> {
+            if (clientId == null) {
+                return criteriaBuilder.conjunction(); // không có điều kiện
+            }
+            return criteriaBuilder.equal(root.get("client").get("id"), clientId);
+        };
+    }
 }
