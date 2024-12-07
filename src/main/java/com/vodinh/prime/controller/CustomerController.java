@@ -48,22 +48,7 @@ public class CustomerController {
     @PutMapping("/customer")
     public ResponseEntity<?> updateCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
 
-        // Creating user's account
-        User user = new User();
-        boolean updatePass = false;
-        if (createCustomerRequest.getPassword().isBlank()) {
-            createCustomerRequest.setPassword(null);
-        } else {
-            updatePass = true;
-        }
-        BeanUtils.copyProperties(createCustomerRequest, user);
-
-        if (userService.isExistedUser(user)) {
-            return new ResponseEntity<>(new ApiResponse(false, "Info was already existed!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        User result = userService.updateUser(user, updatePass);
+        User result = userService.updateUser(createCustomerRequest);
 
         return  ResponseEntity.ok(result);
     }

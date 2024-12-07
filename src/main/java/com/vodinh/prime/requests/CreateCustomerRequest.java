@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCustomerRequest extends SignUpRequest {
 
+    Long id;
+
     @NotBlank
     private String clientId;
 
