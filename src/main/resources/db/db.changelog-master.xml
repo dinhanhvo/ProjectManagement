@@ -12,6 +12,7 @@
     <include file="classpath:db/changelogs/05_create_line_table.xml" />
     <include file="classpath:db/changelogs/06_create_region_table.xml" />
     <include file="classpath:db/changelogs/07_create_factory_table.xml" />
+    <include file="classpath:db/changelogs/08_create-product-table.xml" />
     <include file="classpath:db/changelogs/08-add-code-column-to-users.xml" />
     <include file="classpath:db/changelogs/09-add-line-column-to-weight.xml" />
     <include file="classpath:db/changelogs/10-update_line_id_nullable_to_true.xml" />
