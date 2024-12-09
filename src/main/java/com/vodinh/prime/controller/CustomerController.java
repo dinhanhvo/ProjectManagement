@@ -61,6 +61,7 @@ public class CustomerController {
 
         Page<User> customers = userService.getAllCustomer(pageable);
         response.setHeader("X-Total-Count", String.valueOf(customers.getTotalElements()));
+        
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
