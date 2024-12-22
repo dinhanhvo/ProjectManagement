@@ -34,6 +34,7 @@ public class Weight extends DateAudit {
     @Column(name = "sell_at")
     private LocalDateTime sellAt;
 
+    @Column(name = "status", nullable = true)
     @Enumerated(EnumType.STRING)
     private WeightStatus status;
 
