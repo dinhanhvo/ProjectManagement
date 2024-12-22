@@ -1,5 +1,6 @@
 package com.vodinh.prime.requests;
 
+import com.vodinh.prime.enums.WeightStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class WeightRequest {
     @NotBlank
     private Double quyCach;
 
-    private String status;
+    private WeightStatus status;
 
     private LocalDateTime sellAt;
 
