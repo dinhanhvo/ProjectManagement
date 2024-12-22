@@ -27,7 +27,7 @@ public class WeightRequest {
     @NotBlank
     private Double quyCach;
 
-    private WeightStatus status;
+    private WeightStatus status = WeightStatus.INACTIVE;
 
     private LocalDateTime sellAt;
 
