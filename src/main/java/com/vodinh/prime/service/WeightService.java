@@ -12,6 +12,7 @@ import com.vodinh.prime.repositories.UserRepository;
 import com.vodinh.prime.repositories.WeightRepository;
 import com.vodinh.prime.requests.WeightRequest;
 import com.vodinh.prime.specification.WeightSpecification;
+import com.vodinh.prime.util.BeanUtilsHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -80,7 +81,8 @@ public class WeightService {
             weight = new Weight();
         }
 
-        BeanUtils.copyProperties(weightRequest, weight);
+//        BeanUtils.copyProperties(weightRequest, weight);
+        BeanUtilsHelper.copyNonNullProperties(weightRequest, weight);
 
         User user = userRepository.findById(weightRequest.getContactId()).get();
         weight.setUser(user);

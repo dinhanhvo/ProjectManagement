@@ -36,7 +36,7 @@ public class Weight extends DateAudit {
 
     @Column(name = "status", nullable = true)
     @Enumerated(EnumType.STRING)
-    private WeightStatus status;
+    private WeightStatus status = WeightStatus.INACTIVE;
 
     @ManyToOne
     @JoinColumn(name = "contact_id", nullable = false)
