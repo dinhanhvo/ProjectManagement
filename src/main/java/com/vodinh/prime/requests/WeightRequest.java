@@ -35,4 +35,5 @@ public class WeightRequest {
     private Long contactId;
 
     private Long lineId; // ID của Line
+    private String weightId;
 }

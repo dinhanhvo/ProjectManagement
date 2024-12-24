@@ -32,4 +32,5 @@ public class WeightDTO extends BaseDTO{
     private String lineName; // Tên của Line (nếu cần)
 
     private String status;
+    private String weightId;
 }
