@@ -14,6 +14,7 @@ public interface WeightMapper {
     @Mapping(source = "line.id", target = "lineId")
     @Mapping(source = "line.name", target = "lineName")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "weightId", target = "weightId")
     WeightDTO toDTO(Weight weight);
 
 //    @Mapping(source = "contactId", target = "user.id")
